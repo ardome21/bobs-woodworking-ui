@@ -1,9 +1,0 @@
-<h2 class="products-title">All Products</h2>
-<div class="products-container">
-    @for (product of products(); track product.id) {
-        <div class="product-card">
-        <h3>{{ product.name }}</h3>
-        <p class="price">${{ product.price }}</p>
-        </div>
-    }
-</div>

@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Products } from '../products/products';
-import { Product } from '../models/products';
+import { Products } from '../../../services/products';
+import { Product } from '../../../models/products';
+import { ProductsList } from "../../presenters/products-list/products-list";
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [ProductsList],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

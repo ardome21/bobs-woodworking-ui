@@ -1,0 +1,12 @@
+<h2 class="products-title">All Products</h2>
+<div class="products-container">
+    @for (product of products; track product.id) {
+        <a 
+            class="product-card"
+            [routerLink]="['/product', product.id]"
+            title="View {{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p class="price">${{ product.price }}</p>
+    </a>
+    }
+</div>

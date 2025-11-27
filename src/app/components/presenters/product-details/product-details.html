@@ -1,0 +1,12 @@
+@if (product) {
+    <div class="products-container">
+        <div class="product-card">
+            <h1>{{ product.name }}</h1>
+            <p>${{ product.price }}</p>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+}
+@else {
+    <p>Loading product details...</p>
+}

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
+import { Home } from './components/containers/home/home';
+import { ProductPage } from './components/containers/product-page/product-page';
 
 export const routes: Routes = [
     {
@@ -10,6 +11,10 @@ export const routes: Routes = [
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'
+    },
+    {
+        path: 'product/:id',
+        component: ProductPage
     },
     {
         path: '**',

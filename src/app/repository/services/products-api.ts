@@ -11,9 +11,14 @@ export class ProductsApi {
 
   // FIXME: Switch with real URL
   private getProductsUrl = '/mock-data/products.json'
+  private getProductByIdUrl = '/mock-data/product.json'
 
   getProducts(): Observable<ProductData[]>{
     return this.http.get<ProductData[]>(this.getProductsUrl)
+  }
+
+  getProductById(id: number): Observable<ProductData> {
+    return this.http.get<ProductData>(this.getProductByIdUrl);
   }
   
 }

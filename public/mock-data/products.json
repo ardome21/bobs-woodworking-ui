@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Custom Dining Table",
+    "price": 1200,
+    "imageUrl": "/assets/images/table.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Handcrafted Bookshelf",
+    "price": 800,
+    "imageUrl": "/assets/images/bookshelf.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Wooden Rocking Chair",
+    "price": 450,
+    "imageUrl": "/assets/images/rocking-chair.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Coffee Table Set",
+    "price": 650,
+    "imageUrl": "/assets/images/coffee-table.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Kitchen Island",
+    "price": 1500,
+    "imageUrl": "/assets/images/kitchen-island.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Bedroom Dresser",
+    "price": 950,
+    "imageUrl": "/assets/images/dresser.jpg"
+  },
+  {
+    "id": 7,
+    "name": "TV Stand",
+    "price": 550,
+    "imageUrl": "/assets/images/tv-stand.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Desk with Hutch",
+    "price": 1100,
+    "imageUrl": "/assets/images/desk.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Coat Rack",
+    "price": 180,
+    "imageUrl": "/assets/images/coat-rack.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Wine Cabinet",
+    "price": 720,
+    "imageUrl": "/assets/images/wine-cabinet.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Nightstand Pair",
+    "price": 480,
+    "imageUrl": "/assets/images/nightstands.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Garden Bench",
+    "price": 390,
+    "imageUrl": "/assets/images/garden-bench.jpg"
+  }
+]

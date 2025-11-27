@@ -1,0 +1,19 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { ProductData } from '../types/products';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProductsApi {
+  private http = inject(HttpClient);
+
+  // FIXME: Switch with real URL
+  private getProductsUrl = '/mock-data/products.json'
+
+  getProducts(): Observable<ProductData[]>{
+    return this.http.get<ProductData[]>(this.getProductsUrl)
+  }
+  
+}

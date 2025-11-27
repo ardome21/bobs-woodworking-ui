@@ -20,8 +20,8 @@ export class ProductPage implements OnInit {
     ngOnInit() {
         const id = Number(this.route.snapshot.paramMap.get('id'))
         if (!isNaN(id)) this.loadProductInfo(id)
-        this.loadProductInfo(id)
-    }
+        else {console.error('Invalid product ID');}
+        }
 
     loadProductInfo(id: number) {
         this.productService.getProductById(id).subscribe({

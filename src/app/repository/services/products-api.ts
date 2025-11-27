@@ -18,6 +18,7 @@ export class ProductsApi {
   }
 
   getProductById(id: number): Observable<ProductData> {
+    // FIXME: Use the id to fetch the correct product
     return this.http.get<ProductData>(this.getProductByIdUrl);
   }
   

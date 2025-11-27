@@ -20,6 +20,8 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, bobs-woodworking-ui');
+    
+    const title = compiled.querySelector('[data-testid="app-title"]');
+    expect(title?.textContent).toContain("Bob's Woodworking");
   });
 });

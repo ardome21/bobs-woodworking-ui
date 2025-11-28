@@ -1,0 +1,28 @@
+<header>
+  <p class="title">{{title}}</p>
+  @if (authChecked$ | async) {
+    <div class="user-section">
+      @if (userProfile$ | async) {
+        <div class="logged-in">
+          <span class="welcome-text">Welcome, {{ (userProfile$ | async)?.firstName }}!</span>
+          <button (click)="logout()" class="logout-btn">Logout</button>
+        </div>
+      }
+      @else {
+        <div class="logged-out">
+          <button (click)="openLoginDialog($event)" class="login-btn" matFab extended>
+            Login
+          </button>
+          <button (click)="openCreateAccountDialog($event)" class="signup-btn" matFab extended>
+            Sign Up
+          </button>
+        </div>
+      }
+    </div>
+  }
+  @else {
+    <div class="loading">
+      <span>Loading...</span>
+    </div>
+  }
+</header>

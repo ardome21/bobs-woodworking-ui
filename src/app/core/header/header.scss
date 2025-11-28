@@ -1,0 +1,75 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Pushes left and right items to edges */
+  padding: 10px 20px;
+  background-color: #e6dda5;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-right: 20px;
+  }
+
+  p.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    line-height: 50px;
+    flex-grow: 1; /* Ensures it takes up available space */
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    button {
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    p {
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .logged-in {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      .welcome-text {
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      .logout-btn {
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+    }
+
+    .logged-out {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .login-btn,
+      .signup-btn {
+        padding: 6px 12px;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}

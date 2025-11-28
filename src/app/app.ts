@@ -1,6 +1,7 @@
+import { H } from '@angular/cdk/keycodes';
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from "./core/components/header/header";
+import { Header } from './core/header/header';
 
 @Component({
   selector: 'app-root',

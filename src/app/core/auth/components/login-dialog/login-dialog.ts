@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,8 +17,7 @@ export class LoginDialog {
 
 
   profileForm: FormGroup;
-  isLoading = false;
-  isSuccess = false;
+  isLoading = signal<boolean>(false); 
 
   _userService = inject(Auth)
 
@@ -37,7 +36,7 @@ export class LoginDialog {
         this.markFormGroupTouched();
         return;
       }
-      this.isLoading = true;
+      this.isLoading.set(true);
       const loginData = {
         email: this.f['email'].value,
         password: this.f['password'].value
@@ -48,7 +47,7 @@ export class LoginDialog {
         this.dialogRef.close()
       },
       error: (res) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.snackBar.open('Login failed: ' + res.error.error, 'Close', {
           duration: 3000,
           panelClass: 'snackbar-error'

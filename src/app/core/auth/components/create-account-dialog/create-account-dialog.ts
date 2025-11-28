@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,9 +17,7 @@ export class CreateAccountDialog {
 
 
   profileForm: FormGroup;
-  isLoading = false;
-  isSuccess = false;
-
+  isLoading = signal<boolean>(false);
   _userService = inject(Auth)
 
   constructor() {
@@ -55,7 +53,7 @@ export class CreateAccountDialog {
       this.markFormGroupTouched();
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     const userData = {
       email: this.f['email'].value,
       password: this.f['password'].value,
@@ -68,7 +66,7 @@ export class CreateAccountDialog {
       this.snackBar.open('Account Created! Please verify your email', 'Close', { duration: 6000, panelClass: 'snackbar-info' });
     },
     error: (res) => {
-      this.isLoading = false;
+      this.isLoading.set(false);
       this.snackBar.open('Error creating account: ' + res.error.error, 'Close', {
         duration: 3000,
         panelClass: 'snackbar-error'

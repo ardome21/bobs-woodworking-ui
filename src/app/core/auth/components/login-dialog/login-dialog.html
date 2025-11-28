@@ -10,9 +10,11 @@
         [class.is-invalid]="isFieldInvalid('email')"
         placeholder="Enter your email"
       >
-      <div class="error-message" *ngIf="isFieldInvalid('email')">
-        {{ getFieldError('email') }}
-      </div>
+      @if (isFieldInvalid('email')) {
+            <div class="error-message">
+                {{ getFieldError('email') }}
+            </div>
+      }
     </div>
 
     <!-- Password Field -->
@@ -26,18 +28,24 @@
         [class.is-invalid]="isFieldInvalid('password')"
         placeholder="Enter your password"
       >
-      <div class="error-message" *ngIf="isFieldInvalid('password')">
-        {{ getFieldError('password') }}
-      </div>
+      @if (isFieldInvalid('password')) {
+            <div class="error-message">
+                {{ getFieldError('password') }}
+            </div>
+      }
     </div>
         <!-- Submit Button -->
     <button
       type="submit"
       class="submit-btn"
-      [disabled]="isLoading"
-      [class.loading]="isLoading"
+      [disabled]="isLoading()"
+      [class.loading]="isLoading()"
     >
-      <span *ngIf="!isLoading">Login</span>
-      <span *ngIf="isLoading">Login...</span>
+    @if (isLoading()) {
+        <span>Login...</span>
+    }
+    @else {
+        <span>Login</span>
+    }
     </button>
 </form>

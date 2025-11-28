@@ -3,14 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { UserAdapter } from './user-adapter';
 
 describe('UserAdapter', () => {
-  let service: UserAdapter;
+    let service: UserAdapter;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(UserAdapter);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(UserAdapter);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

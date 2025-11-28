@@ -5,21 +5,20 @@ import { map, Observable } from 'rxjs';
 import { ProductsAdapter } from './adapters/products-adapter';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class Products {
+    private productsApi = inject(ProductsApi);
 
-  private productsApi = inject(ProductsApi)
+    getProducts(): Observable<Product[]> {
+        return this.productsApi
+            .getProducts()
+            .pipe(map((data) => ProductsAdapter.adaptMany(data)));
+    }
 
-  getProducts(): Observable<Product[]>{
-    return this.productsApi.getProducts().pipe(
-      map(data => ProductsAdapter.adaptMany(data))
-    )
-  }
-
-  getProductById(id: number): Observable<Product> {
-    return this.productsApi.getProductById(id).pipe(
-      map(data => ProductsAdapter.adapt(data))
-    )
-  }
+    getProductById(id: number): Observable<Product> {
+        return this.productsApi
+            .getProductById(id)
+            .pipe(map((data) => ProductsAdapter.adapt(data)));
+    }
 }

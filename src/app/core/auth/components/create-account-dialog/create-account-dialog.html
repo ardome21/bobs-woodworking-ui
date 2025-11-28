@@ -2,108 +2,108 @@
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
     <!-- Email Field -->
     <div class="form-group">
-      <label for="email">Email: <span class="required">*</span></label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        class="form-control"
-        [class.is-invalid]="isFieldInvalid('email')"
-        placeholder="Enter your email"
-      >
-      @if (isFieldInvalid('email')) {
-          <div class="error-message">
-            {{ getFieldError('email') }}
-          </div>
-      }
+        <label for="email">Email: <span class="required">*</span></label>
+        <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('email')"
+            placeholder="Enter your email"
+        />
+        @if (isFieldInvalid("email")) {
+            <div class="error-message">
+                {{ getFieldError("email") }}
+            </div>
+        }
     </div>
 
     <!-- Password Field -->
     <div class="form-group">
-      <label for="password">Password: <span class="required">*</span></label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        class="form-control"
-        [class.is-invalid]="isFieldInvalid('password')"
-        placeholder="Enter your password"
-      >
-      @if (isFieldInvalid('password')) {
-          <div class="error-message">
-            {{ getFieldError('password') }}
-          </div>
-      }
+        <label for="password">Password: <span class="required">*</span></label>
+        <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('password')"
+            placeholder="Enter your password"
+        />
+        @if (isFieldInvalid("password")) {
+            <div class="error-message">
+                {{ getFieldError("password") }}
+            </div>
+        }
     </div>
 
     <!-- Confirm Password Field -->
     <div class="form-group">
-      <label for="confirmPassword">Confirm Password: <span class="required">*</span></label>
-      <input
-        type="password"
-        id="confirmPassword"
-        formControlName="confirmPassword"
-        class="form-control"
-        [class.is-invalid]="isFieldInvalid('confirmPassword')"
-        placeholder="Confirm your password"
-      >
-      @if (isFieldInvalid('confirmPassword')) {
+        <label for="confirmPassword"
+            >Confirm Password: <span class="required">*</span></label
+        >
+        <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('confirmPassword')"
+            placeholder="Confirm your password"
+        />
+        @if (isFieldInvalid("confirmPassword")) {
             <div class="error-message">
-                {{ getFieldError('confirmPassword') }}
+                {{ getFieldError("confirmPassword") }}
             </div>
-      }
+        }
     </div>
 
     <div class="form-group">
-      <label for="firstName">First Name:<span class="required">*</span></label>
-      <input
-        type="text"
-        id="firstName"
-        formControlName="firstName"
-        class="form-control"
-        [class.is-invalid]="isFieldInvalid('firstName')"
-        placeholder="Enter your first name"
-      >
-      @if (isFieldInvalid('firstName')) {
+        <label for="firstName"
+            >First Name:<span class="required">*</span></label
+        >
+        <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('firstName')"
+            placeholder="Enter your first name"
+        />
+        @if (isFieldInvalid("firstName")) {
             <div class="error-message">
-                {{ getFieldError('firstName') }}
+                {{ getFieldError("firstName") }}
             </div>
-      }
+        }
     </div>
 
     <!-- Last Name Field (Optional) -->
     <div class="form-group">
-      <label for="lastName">Last Name:<span class="required">*</span></label>
-      <input
-        type="text"
-        id="lastName"
-        formControlName="lastName"
-        class="form-control"
-        [class.is-invalid]="isFieldInvalid('lastName')"
-        placeholder="Enter your last name"
-      >
-      @if (isFieldInvalid('lastName')) {
+        <label for="lastName">Last Name:<span class="required">*</span></label>
+        <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('lastName')"
+            placeholder="Enter your last name"
+        />
+        @if (isFieldInvalid("lastName")) {
             <div class="error-message">
-                {{ getFieldError('lastName') }}
+                {{ getFieldError("lastName") }}
             </div>
-      }
+        }
     </div>
 
     <!-- Submit Button -->
     <button
-      type="submit"
-      class="submit-btn"
-      [disabled]="isLoading()"
-      [class.loading]="isLoading()"
+        type="submit"
+        class="submit-btn"
+        [disabled]="isLoading()"
+        [class.loading]="isLoading()"
     >
-    @if (isLoading()) {
-      <span>Creating...</span>
-        
-    }
-    @else {
-        <span>Create Profile</span>
-    }
+        @if (isLoading()) {
+            <span>Creating...</span>
+        } @else {
+            <span>Create Profile</span>
+        }
     </button>
-  </form>
-
-
+</form>

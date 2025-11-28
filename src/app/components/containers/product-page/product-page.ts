@@ -6,31 +6,32 @@ import { CommonModule } from '@angular/common';
 import { ProductDetails } from '../../presenters/product-details/product-details';
 
 @Component({
-  selector: 'app-product-page',
-  imports: [ CommonModule, RouterModule, ProductDetails ],
-  templateUrl: './product-page.html',
-  styleUrls: ['./product-page.scss'],
+    selector: 'app-product-page',
+    imports: [CommonModule, RouterModule, ProductDetails],
+    templateUrl: './product-page.html',
+    styleUrls: ['./product-page.scss'],
 })
 export class ProductPage implements OnInit {
-
-    private productService = inject(Products)
-    private route = inject(ActivatedRoute)
-    product = signal<Product | null>(null)
+    private productService = inject(Products);
+    private route = inject(ActivatedRoute);
+    product = signal<Product | null>(null);
 
     ngOnInit() {
-        const id = Number(this.route.snapshot.paramMap.get('id'))
-        if (!isNaN(id)) this.loadProductInfo(id)
-        else {console.error('Invalid product ID');}
+        const id = Number(this.route.snapshot.paramMap.get('id'));
+        if (!isNaN(id)) this.loadProductInfo(id);
+        else {
+            console.error('Invalid product ID');
         }
+    }
 
     loadProductInfo(id: number) {
         this.productService.getProductById(id).subscribe({
-        next: (data) => {
-            this.product.set(data);
-        },
-        error: (err) => {
-            console.error('Error loading products:', err);
-        }
+            next: (data) => {
+                this.product.set(data);
+            },
+            error: (err) => {
+                console.error('Error loading products:', err);
+            },
         });
     }
 }

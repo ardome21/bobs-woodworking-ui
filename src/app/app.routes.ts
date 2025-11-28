@@ -5,19 +5,19 @@ import { ProductPage } from './components/containers/product-page/product-page';
 export const routes: Routes = [
     {
         path: 'home',
-        component: Home
+        component: Home,
     },
     {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full'
+        pathMatch: 'full',
     },
     {
         path: 'product/:id',
-        component: ProductPage
+        component: ProductPage,
     },
     {
         path: '**',
-        redirectTo: 'home'
-    }
+        redirectTo: 'home',
+    },
 ];

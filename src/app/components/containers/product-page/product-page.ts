@@ -12,9 +12,10 @@ import { ProductDetails } from '../../presenters/product-details/product-details
     styleUrls: ['./product-page.scss'],
 })
 export class ProductPage implements OnInit {
-    private productService = inject(Products);
+    public product = signal<Product | null>(null);
+
     private route = inject(ActivatedRoute);
-    product = signal<Product | null>(null);
+    private productService = inject(Products);
 
     ngOnInit() {
         const id = Number(this.route.snapshot.paramMap.get('id'));

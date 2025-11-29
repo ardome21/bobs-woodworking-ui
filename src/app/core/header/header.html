@@ -7,7 +7,12 @@
                     <span class="welcome-text"
                         >Welcome, {{ (userProfile$ | async)?.firstName }}!</span
                     >
-                    <button (click)="logout()" class="logout-btn">
+                    <button
+                        (click)="logout()"
+                        class="logout-btn"
+                        matFab
+                        extended
+                    >
                         Logout
                     </button>
                 </div>

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthApi {
     // TODO: Set the correct base URL for the API
-    private baseUrl = '';
+    private baseUrl = 'https://onvnsym9th.execute-api.us-east-1.amazonaws.com';
 
     constructor(private http: HttpClient) {}
 
@@ -45,13 +45,13 @@ export class AuthApi {
 
     verifyAuth(): Observable<{
         message: string;
-        userData: UserData;
-        success: string;
+        user: UserData;
+        success: boolean;
     }> {
         return this.http.get<{
             message: string;
-            userData: UserData;
-            success: string;
+            user: UserData;
+            success: boolean;
         }>(this.baseUrl + '/login', { withCredentials: true });
     }
 

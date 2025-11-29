@@ -1,0 +1,17 @@
+<div class="confirmation-container">
+    @if (alreadyConfirmed()) {
+        <div class="info-card">
+            <h1>Email Already Confirmed</h1>
+            <p>Your account was already verified. You can log in below.</p>
+            <button (click)="goToLogin()" class="login-btn">Go to Home</button>
+        </div>
+    } @else {
+        <div class="success-card">
+            <h1>✅ Email Confirmed!</h1>
+            <p>Welcome {{ userEmail }}! Your account is now active.</p>
+            <button (click)="goToLogin()" class="login-btn">
+                Continue to Home
+            </button>
+        </div>
+    }
+</div>

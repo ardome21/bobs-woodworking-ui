@@ -1,5 +1,19 @@
 <header>
     <p class="title">{{ title }}</p>
+
+    <nav class="nav-links">
+        @for (page of pages; track page.title) {
+            <a
+                mat-button
+                class="nav-link"
+                [routerLink]="page.url"
+                routerLinkActive="active"
+                [title]="page.title"
+            >
+                {{ page.title }}
+            </a>
+        }
+    </nav>
     @if (authChecked$ | async) {
         <div class="user-section">
             @if (userProfile$ | async) {

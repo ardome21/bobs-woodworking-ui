@@ -1,7 +1,7 @@
 header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pushes left and right items to edges */
+    justify-content: space-between;
     padding: 10px 20px;
     background-color: #e6dda5;
 
@@ -17,7 +17,31 @@ header {
         font-weight: bold;
         margin: 0;
         line-height: 50px;
-        flex-grow: 1; /* Ensures it takes up available space */
+        flex-shrink: 0;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-grow: 1;
+        justify-content: center;
+
+        .nav-link {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+
+            &.active {
+                background-color: rgba(0, 0, 0, 0.1);
+                font-weight: 500;
+            }
+        }
     }
 
     .user-profile {
@@ -35,10 +59,12 @@ header {
             font-size: 1rem;
         }
     }
+
     .user-section {
         display: flex;
         align-items: center;
         gap: 15px;
+        flex-shrink: 0;
 
         .logged-in {
             display: flex;
@@ -70,6 +96,16 @@ header {
                     transform: scale(1.05);
                 }
             }
+        }
+    }
+
+    .loading {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        span {
+            font-size: 1rem;
         }
     }
 }

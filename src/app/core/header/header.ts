@@ -23,6 +23,13 @@ export class Header {
     userProfile$ = this._userService.userProfile$;
     authChecked$ = this._userService.authChecked$;
 
+    pages = [
+        { title: 'Home', url: '/home' },
+        { title: 'Browse Products', url: '/browse-products' },
+
+        { title: 'Update Inventory', url: '/update-inventory' },
+    ];
+
     openCreateAccountDialog(event?: Event): void {
         if (event && event.target instanceof HTMLElement) {
             event.target.blur();

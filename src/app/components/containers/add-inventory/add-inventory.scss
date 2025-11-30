@@ -1,0 +1,12 @@
+.add-inventory-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+
+    h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        color: #2c2c2c;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+}

@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root',
 })
 export class AuthApi {
-    // TODO: Set the correct base URL for the API
-    private baseUrl = 'https://onvnsym9th.execute-api.us-east-1.amazonaws.com';
+    private baseUrl = 'https://api.bobs-woodworking.com';
 
     constructor(private http: HttpClient) {}
 

@@ -57,3 +57,12 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Deploy
+
+1. Build
+2. Push to S3
+   '''
+   aws s3 sync dist/bobs-woodworking-ui/browser s3://bobs-woodworks-frontend/ --delete
+   '''
+3. Invalidate Caches of Cloudfront

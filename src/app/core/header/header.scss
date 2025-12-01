@@ -1,9 +1,14 @@
 header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pushes left and right items to edges */
+    justify-content: space-between;
     padding: 10px 20px;
-    background-color: #e6dda5;
+
+    background-color: var(--mat-sys-surface-container);
+
+    color: var(--mat-sys-on-surface);
+
+    flex-wrap: wrap;
 
     img {
         width: 50px;
@@ -17,7 +22,37 @@ header {
         font-weight: bold;
         margin: 0;
         line-height: 50px;
-        flex-grow: 1; /* Ensures it takes up available space */
+        color: var(--mat-sys-primary);
+        flex-shrink: 0;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-grow: 1;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .nav-link {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background-color 0.2s, color 0.2s;
+
+            /* Default link color */
+            color: var(--mat-sys-on-surface);
+
+            &:hover {
+                background-color: var(--mat-sys-surface-container-high);
+            }
+
+            &.active {
+                background-color: var(--mat-sys-primary-container);
+                color: var(--mat-sys-on-primary-container);
+                font-weight: 500;
+            }
+        }
     }
 
     .user-profile {
@@ -35,41 +70,83 @@ header {
             font-size: 1rem;
         }
     }
+
     .user-section {
         display: flex;
         align-items: center;
         gap: 15px;
+        flex-shrink: 0;
+        flex-wrap: wrap;
 
-        .logged-in {
+        .logged-in,
+        .logged-out {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
 
             .welcome-text {
                 font-size: 1rem;
                 margin: 0;
             }
 
+            .login-btn,
+            .signup-btn,
             .logout-btn {
                 padding: 6px 12px;
                 cursor: pointer;
-            }
-        }
 
-        .logged-out {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            .login-btn,
-            .signup-btn {
-                padding: 6px 12px;
-                cursor: pointer;
+                /* Material button colors */
+                background-color: var(--mat-sys-primary-container);
+                color: var(--mat-sys-on-primary-container);
+                border-radius: 6px;
 
                 &:hover {
-                    transform: scale(1.05);
+                    background-color: var(--mat-sys-primary-container-high);
                 }
             }
+        }
+    }
+
+    .loading {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        span {
+            font-size: 1rem;
+        }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        justify-content: center;
+        text-align: center;
+
+        img {
+            margin: 0 auto 10px auto;
+        }
+
+        p.title {
+            line-height: normal;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--mat-sys-outline-variant);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--mat-sys-outline-variant);
+        }
+
+        .user-section,
+        .user-profile {
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
         }
     }
 }

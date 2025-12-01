@@ -1,0 +1,16 @@
+<!-- Form GROUP that lets you upload picture(s), put title, descripitpin, and prices -->
+<div class="add-inventory-container">
+    <h1>Add New Inventory Item</h1>
+    <app-add-inventory-form
+        [formGroup]="inventoryForm"
+        (formSubmit)="onSubmit()"
+    ></app-add-inventory-form>
+</div>
+<button
+    matButton="tonal"
+    color="accent"
+    class="back-button"
+    routerLink="/update-inventory"
+>
+    Back
+</button>

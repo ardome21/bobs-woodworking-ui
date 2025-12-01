@@ -22,6 +22,6 @@ describe('App', () => {
         const compiled = fixture.nativeElement as HTMLElement;
 
         const title = compiled.querySelector('[data-testid="app-title"]');
-        expect(title?.textContent).toContain("Bob's Woodworking");
+        expect(title?.textContent).toContain("Bob's Woodworks");
     });
 });

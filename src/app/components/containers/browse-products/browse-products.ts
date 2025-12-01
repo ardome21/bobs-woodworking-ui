@@ -1,16 +1,16 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Products } from '../../../services/products';
+import { Component, inject, signal } from '@angular/core';
 import { Product } from '../../../models/products';
+import { Products } from '../../../services/products';
 import { ProductsList } from '../../presenters/products-list/products-list';
-import { BrowseProducts } from '../browse-products/browse-products';
+import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-home',
-    imports: [BrowseProducts],
-    templateUrl: './home.html',
-    styleUrl: './home.scss',
+    selector: 'app-browse-products',
+    imports: [ProductsList],
+    templateUrl: './browse-products.html',
+    styleUrl: './browse-products.scss',
 })
-export class Home implements OnInit {
+export class BrowseProducts {
     products = signal<Product[]>([]);
 
     private productService = inject(Products);

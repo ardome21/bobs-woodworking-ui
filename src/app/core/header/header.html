@@ -1,45 +1,59 @@
 <header>
     <p class="title">{{ title }}</p>
+
+    <nav class="nav-links">
+        @for (page of pages; track page.title) {
+        <a
+            mat-button
+            class="nav-link"
+            [routerLink]="page.url"
+            routerLinkActive="active"
+            [title]="page.title"
+        >
+            {{ page.title }}
+        </a>
+        }
+    </nav>
     @if (authChecked$ | async) {
-        <div class="user-section">
-            @if (userProfile$ | async) {
-                <div class="logged-in">
-                    <span class="welcome-text"
-                        >Welcome, {{ (userProfile$ | async)?.firstName }}!</span
-                    >
-                    <button
-                        (click)="logout()"
-                        class="logout-btn"
-                        matFab
-                        extended
-                    >
-                        Logout
-                    </button>
-                </div>
-            } @else {
-                <div class="logged-out">
-                    <button
-                        (click)="openLoginDialog($event)"
-                        class="login-btn"
-                        matFab
-                        extended
-                    >
-                        Login
-                    </button>
-                    <button
-                        (click)="openCreateAccountDialog($event)"
-                        class="signup-btn"
-                        matFab
-                        extended
-                    >
-                        Sign Up
-                    </button>
-                </div>
-            }
+    <div class="user-section">
+        @if (userProfile$ | async) {
+        <div class="logged-in">
+            <span class="welcome-text"
+                >Welcome, {{ (userProfile$ | async)?.firstName }}!</span
+            >
+            <button
+                (click)="logout()"
+                class="logout-btn"
+                matButton="outlined"
+                extended
+            >
+                Logout
+            </button>
         </div>
+        } @else {
+        <div class="logged-out">
+            <button
+                (click)="openLoginDialog($event)"
+                class="login-btn"
+                matButton="outlined"
+                extended
+            >
+                Login
+            </button>
+            <button
+                (click)="openCreateAccountDialog($event)"
+                class="signup-btn"
+                matButton="outlined"
+                extended
+            >
+                Sign Up
+            </button>
+        </div>
+        }
+    </div>
     } @else {
-        <div class="loading">
-            <span>Loading...</span>
-        </div>
+    <div class="loading">
+        <span>Loading...</span>
+    </div>
     }
 </header>

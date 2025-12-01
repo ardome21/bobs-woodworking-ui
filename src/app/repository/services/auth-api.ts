@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
     providedIn: 'root',
 })
 export class AuthApi {
-    private baseUrl = 'https://api.bobs-woodworking.com';
+    private baseUrl = 'https://api.bobs-woodworks.com';
 
     constructor(private http: HttpClient) {}
 
     createUser(
-        userData: UserData,
+        userData: UserData
     ): Observable<{ message: string; user: UserData; success: string }> {
         const payload = {
             email: userData.email,
@@ -58,7 +58,7 @@ export class AuthApi {
         return this.http.post<{ success: string; message: string }>(
             this.baseUrl + '/logout',
             {},
-            { withCredentials: true },
+            { withCredentials: true }
         );
     }
 }

@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Auth } from '../auth/services/auth';

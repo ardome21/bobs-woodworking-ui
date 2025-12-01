@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-add-inventory-form',
@@ -68,7 +69,9 @@ export class AddInventoryForm {
     getErrorMessage(controlName: string): string {
         const control = this.formGroup.get(controlName);
         if (control?.hasError('required')) {
-            return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} is required`;
+            return `${
+                controlName.charAt(0).toUpperCase() + controlName.slice(1)
+            } is required`;
         }
         if (control?.hasError('minlength')) {
             const minLength = control.errors?.['minlength'].requiredLength;

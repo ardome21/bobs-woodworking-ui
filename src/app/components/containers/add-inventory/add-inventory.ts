@@ -6,10 +6,17 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { AddInventoryForm } from '../../presenters/add-inventory-form/add-inventory-form';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-add-inventory',
-    imports: [ReactiveFormsModule, AddInventoryForm],
+    imports: [
+        ReactiveFormsModule,
+        AddInventoryForm,
+        MatButtonModule,
+        RouterModule,
+    ],
     templateUrl: './add-inventory.html',
     styleUrl: './add-inventory.scss',
 })

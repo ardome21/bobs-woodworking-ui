@@ -4,10 +4,8 @@ header {
     justify-content: space-between;
     padding: 10px 20px;
 
-    /* Use Material 3 surface container as the header background */
     background-color: var(--mat-sys-surface-container);
 
-    /* Header text color automatically adapts to light/dark mode */
     color: var(--mat-sys-on-surface);
 
     flex-wrap: wrap;
@@ -24,7 +22,7 @@ header {
         font-weight: bold;
         margin: 0;
         line-height: 50px;
-        color: var(--mat-sys-primary); /* branding highlight */
+        color: var(--mat-sys-primary);
         flex-shrink: 0;
     }
 
@@ -138,6 +136,10 @@ header {
             justify-content: center;
             width: 100%;
             margin-bottom: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--mat-sys-outline-variant);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--mat-sys-outline-variant);
         }
 
         .user-section,

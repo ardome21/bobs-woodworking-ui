@@ -9,4 +9,6 @@ import { Product } from '../../../models/products';
 })
 export class ProductDetails {
     @Input() product: Product | null = null;
+
+    @Input() editView: boolean = false;
 }

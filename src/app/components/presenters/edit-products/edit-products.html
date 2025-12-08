@@ -1,0 +1,57 @@
+<div class="header-actions">
+    @if (selectedProducts.size > 0) {
+        <button
+            mat-raised-button
+            color="warn"
+            (click)="deleteSelected()"
+            class="bulk-delete-btn"
+        >
+            Delete Selected ({{ selectedProducts.size }})
+        </button>
+    }
+</div>
+
+<div class="products-container">
+    @for (product of products; track product.id) {
+        <div class="product-card">
+            <div class="card-header">
+                <input
+                    type="checkbox"
+                    class="product-checkbox"
+                    [checked]="selectedProducts.has(product.id)"
+                    (change)="toggleSelection(product.id)"
+                    (click)="$event.stopPropagation()"
+                />
+                <button
+                    mat-icon-button
+                    color="warn"
+                    class="delete-btn"
+                    (click)="
+                        deleteProduct(product.id); $event.stopPropagation()
+                    "
+                    title="Delete {{ product.name }}"
+                >
+                    <span class="delete-icon">✕</span>
+                </button>
+            </div>
+
+            <img
+                [src]="product.imageUrl"
+                alt="{{ product.name }}"
+                class="product-image"
+            />
+            <h3>{{ product.name }}</h3>
+            <p class="price">${{ product.price }}</p>
+
+            <button
+                mat-raised-button
+                color="primary"
+                class="edit-btn"
+                [routerLink]="['/product', product.id, 'edit']"
+                title="Edit {{ product.name }}"
+            >
+                Edit
+            </button>
+        </div>
+    }
+</div>

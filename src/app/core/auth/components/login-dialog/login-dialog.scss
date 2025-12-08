@@ -84,17 +84,3 @@ label {
         padding: 1.5rem;
     }
 }
-
-:host ::ng-deep .mat-snack-bar-container.snackbar-success {
-    background: #43a047 !important; // solid green
-    color: #fff !important;
-    opacity: 1 !important; // fully opaque
-    font-weight: bold;
-}
-
-:host ::ng-deep .mat-snack-bar-container.snackbar-error {
-    background: var(--mat-sys-error) !important; // solid red
-    color: #fff !important;
-    opacity: 1 !important; // fully opaque
-    font-weight: bold;
-}

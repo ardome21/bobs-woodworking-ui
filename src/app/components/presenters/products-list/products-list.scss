@@ -11,11 +11,11 @@
 }
 
 .product-card {
-    border: 1px solid #ddd;
+    border: 1px solid var(--mat-sys-outline);
     border-radius: 8px;
     padding: 1.5rem;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--mat-sys-surface);
+    box-shadow: 0 2px 4px var(--mat-sys-on-surface-variant);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,6 +31,6 @@
 .price {
     font-weight: bold;
     font-size: 1.25rem;
-    color: #2c5f2d;
+    color: var(--mat-sys-tertiary);
     margin-top: 0.5rem;
 }

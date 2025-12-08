@@ -1,22 +1,22 @@
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
 .back-button {
-  padding: 0.5rem 0.75rem;
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  color: #111;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    background: var(--mat-sys-surface-variant);
+    border: 1px solid var(--mat-sys-outline);
+    border-radius: 6px;
+    color: var(--mat-sys-on-surface);
+    box-shadow: 0 2px 6px var(--mat-sys-on-surface-variant);
+    cursor: pointer;
+    text-decoration: none;
 }
 .back-button:focus {
-  outline: 3px solid rgba(0, 123, 255, 0.15);
-  outline-offset: 2px;
+    outline: 3px solid var(--mat-sys-on-surface);
+    outline-offset: 2px;
 }

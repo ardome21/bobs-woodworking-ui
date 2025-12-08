@@ -12,15 +12,15 @@ body {
 
 .button {
     padding: 0.5rem 0.75rem;
-    background: #fafafa;
-    border: 1px solid #ddd;
+    background: var(--mat-sys-primary-container);
+    border: 1px solid var(--mat-sys-outline);
     border-radius: 6px;
-    color: #111;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    color: var(--mat-sys-on-primary-container);
+    box-shadow: 0 2px 6px var(--mat-sys-on-primary-container);
     cursor: pointer;
     text-decoration: none;
 }
 .button:focus {
-    outline: 3px solid rgba(0, 123, 255, 0.15);
+    outline: 3px solid var(--mat-sys-on-primary-container);
     outline-offset: 2px;
 }

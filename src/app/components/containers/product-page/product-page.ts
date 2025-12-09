@@ -4,10 +4,11 @@ import { Product } from '../../../models/products';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductDetails } from '../../presenters/product-details/product-details';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-product-page',
-    imports: [CommonModule, RouterModule, ProductDetails],
+    imports: [CommonModule, RouterModule, ProductDetails, MatButtonModule],
     templateUrl: './product-page.html',
     styleUrls: ['./product-page.scss'],
 })

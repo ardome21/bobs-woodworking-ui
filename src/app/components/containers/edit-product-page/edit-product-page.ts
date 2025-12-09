@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Product } from '../../../models/products';
 import { Products } from '../../../services/products';
 import { ProductDetails } from '../../presenters/product-details/product-details';
-import { MatAnchor } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-edit-product-page',
-    imports: [ProductDetails, RouterModule, MatAnchor],
+    imports: [ProductDetails, RouterModule, MatButtonModule],
     templateUrl: './edit-product-page.html',
     styleUrl: './edit-product-page.scss',
 })

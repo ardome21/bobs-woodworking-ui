@@ -7,10 +7,17 @@ import { Auth } from '../auth/services/auth';
 import { CreateAccountDialog } from '../auth/components/create-account-dialog/create-account-dialog';
 import { LoginDialog } from '../auth/components/login-dialog/login-dialog';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     selector: 'app-header',
-    imports: [RouterModule, MatButtonModule, MatIconModule, CommonModule],
+    imports: [
+        RouterModule,
+        MatButtonModule,
+        MatIconModule,
+        CommonModule,
+        MatToolbarModule,
+    ],
     templateUrl: './header.html',
     styleUrl: './header.scss',
 })

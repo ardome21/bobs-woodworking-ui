@@ -1,165 +1,91 @@
-header {
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    min-height: 64px;
+    height: auto;
+}
+
+.logo-title {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: var(--mat-sys-surface-container);
-    color: var(--mat-sys-on-surface);
+    gap: 0.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.welcome-message {
+    font-size: 1rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 0.5rem;
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+    flex: 1 1 auto;
+}
 
-    img {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-        margin-right: 20px;
+.nav-link {
+    &.active {
+        background-color: var(--mat-sys-primary-container);
+        color: var(--mat-sys-on-primary-container);
+        font-weight: 500;
     }
+}
 
-    p.title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 0;
-        line-height: 50px;
-        color: var(--mat-sys-primary);
-        flex-shrink: 0;
-    }
+.user-section {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
 
+.logged-in,
+.logged-out,
+.loading {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logout-button,
+.login-button,
+.signup-button {
+    height: 40px !important;
+    padding: 0 16px !important;
+}
+
+@media (max-width: 900px) {
     .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-grow: 1;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        .nav-link {
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background-color 0.2s, color 0.2s;
-            color: var(--mat-sys-on-surface);
-
-            &:hover {
-                background-color: var(--mat-sys-surface-container-high);
-            }
-
-            &.active {
-                background-color: var(--mat-sys-primary-container);
-                color: var(--mat-sys-on-primary-container);
-                font-weight: 500;
-            }
-        }
+        flex-basis: 100%;
+        order: 3;
     }
+}
 
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        button {
-            padding: 6px 12px;
-            cursor: pointer;
-        }
-
-        p {
-            margin: 0;
-            font-size: 1rem;
-        }
-    }
-
-    .user-section {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        flex-shrink: 0;
-        flex-wrap: wrap;
-
-        .logged-in,
-        .logged-out {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            .welcome-text {
-                font-size: 1rem;
-                margin: 0;
-            }
-
-            .login-btn,
-            .signup-btn,
-            .logout-btn {
-                padding: 6px 12px;
-                cursor: pointer;
-                background-color: var(--mat-sys-primary-container);
-                color: var(--mat-sys-on-primary-container);
-                border-radius: 6px;
-
-                &:hover {
-                    background-color: var(--mat-sys-primary-container-high);
-                }
-            }
-        }
-    }
-
-    .loading {
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-
-        span {
-            font-size: 1rem;
-        }
-    }
-
-    /* Scenario 2: Medium screens - nav drops to second row, title and user stay on first row */
-    @media (max-width: 900px) {
-        .nav-links {
-            order: 3;
-            width: 100%;
-            padding-top: 10px;
-            border-top: 1px solid var(--mat-sys-outline-variant);
-        }
-
-        p.title {
-            order: 1;
-        }
-
-        .user-section,
-        .loading {
-            order: 2;
-        }
-    }
-
-    /* Scenario 3: Small screens - vertical stack: title, nav, user */
-    @media (max-width: 600px) {
+@media (max-width: 600px) {
+    .header {
         justify-content: center;
         text-align: center;
+    }
 
-        p.title {
-            order: 1;
-            width: 100%;
-            line-height: normal;
-        }
-
-        .nav-links {
-            order: 3;
-            width: 100%;
-            justify-content: center;
-            padding-top: 10px;
-            border-top: 1px solid var(--mat-sys-outline-variant);
-        }
-
-        .user-section,
-        .loading {
-            order: 2;
-            width: 100%;
-            justify-content: center;
-            padding-top: 10px;
-            border-top: 1px solid var(--mat-sys-outline-variant);
-        }
-
-        img {
-            margin: 0 auto 10px auto;
-        }
+    .logo-title,
+    .nav-links,
+    .user-section {
+        flex-basis: 100%;
+        justify-content: center;
     }
 }

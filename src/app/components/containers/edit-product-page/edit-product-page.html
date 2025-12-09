@@ -1,0 +1,12 @@
+<body>
+    <app-product-details
+        [product]="product()"
+        [editView]="true"
+    ></app-product-details>
+    <div class="button-container">
+        <button routerLink="/products" matButton>Back to Home</button>
+        <button routerLink="/update-inventory" matButton>
+            Back to Update Inventory
+        </button>
+    </div>
+</body>

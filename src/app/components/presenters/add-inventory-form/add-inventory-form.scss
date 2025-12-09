@@ -1,8 +1,8 @@
 .inventory-form {
-    background: white;
+    background: var(--mat-sys-surface);
     padding: clamp(1.5rem, 4vw, 2.5rem);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--mat-sys-on-surface-variant);
 
     .form-section {
         margin-bottom: 2rem;
@@ -11,7 +11,7 @@
             display: block;
             font-size: 1rem;
             font-weight: 600;
-            color: #2c2c2c;
+            color: var(--mat-sys-on-surface-variant);
             margin-bottom: 1rem;
         }
     }
@@ -19,16 +19,16 @@
     .image-upload-section {
         .upload-area {
             position: relative;
-            border: 2px dashed #ccc;
+            border: 2px dashed var(--mat-sys-surface-variant);
             border-radius: 8px;
             padding: 2rem;
             text-align: center;
             transition: all 0.3s ease;
-            background: #fafafa;
+            background: var(--mat-sys-surface);
 
             &:hover {
-                border-color: #8b7355;
-                background: #f5f5f5;
+                border-color: var(--mat-sys-on-surface-variant);
+                background: var(--mat-sys-surface-variant);
             }
 
             .file-input {
@@ -41,13 +41,13 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 0.5rem;
-                color: #666;
+                color: var(--mat-sys-on-surface-variant);
 
                 mat-icon {
                     font-size: 48px;
                     width: 48px;
                     height: 48px;
-                    color: #8b7355;
+                    color: var(--mat-sys-on-surface-variant);
                 }
 
                 span {
@@ -55,7 +55,7 @@
 
                     &.upload-hint {
                         font-size: 0.875rem;
-                        color: #999;
+                        color: var(--mat-sys-on-surface-variant);
                     }
                 }
             }
@@ -72,7 +72,7 @@
                 aspect-ratio: 1;
                 border-radius: 8px;
                 overflow: hidden;
-                border: 2px solid #e0e0e0;
+                border: 2px solid var(--mat-sys-surface-variant);
 
                 img {
                     width: 100%;
@@ -84,8 +84,8 @@
                     position: absolute;
                     top: 4px;
                     right: 4px;
-                    background: rgba(0, 0, 0, 0.6);
-                    color: white;
+                    background: var(--mat-sys-on-surface);
+                    color: var(--mat-sys-surface);
                     width: 28px;
                     height: 28px;
 
@@ -96,7 +96,7 @@
                     }
 
                     &:hover {
-                        background: rgba(0, 0, 0, 0.8);
+                        background: var(--mat-sys-error);
                     }
                 }
             }

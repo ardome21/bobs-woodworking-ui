@@ -1,8 +1,7 @@
-<div>
-    <h2>Update Inventory Page</h2>
-    <p>This is where you can update your inventory.</p>
+<div class="header">
+    <div class="title">Update Inventory Page</div>
+    <p class="subtitle">This is where you can update your inventory.</p>
 </div>
-<!-- Large button that spans the width of screen to upload new inventory-->
 <button
     matButton="tonal"
     class="upload-inventory-btn"
@@ -10,6 +9,5 @@
 >
     Add New Inventory Item
 </button>
+<app-edit-products [products]="products()"></app-edit-products>
 <router-outlet></router-outlet>
-
-<!-- Grid of products that we can edit -->

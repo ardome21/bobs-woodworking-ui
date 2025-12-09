@@ -1,18 +1,17 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Products } from '../../../services/products';
-import { Product } from '../../../models/products';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Product } from '../../../models/products';
+import { Products } from '../../../services/products';
 import { ProductDetails } from '../../presenters/product-details/product-details';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-product-page',
-    imports: [CommonModule, RouterModule, ProductDetails, MatButtonModule],
-    templateUrl: './product-page.html',
-    styleUrls: ['./product-page.scss'],
+    selector: 'app-edit-product-page',
+    imports: [ProductDetails, RouterModule, MatButtonModule],
+    templateUrl: './edit-product-page.html',
+    styleUrl: './edit-product-page.scss',
 })
-export class ProductPage implements OnInit {
+export class EditProductPage {
     public product = signal<Product | null>(null);
 
     private route = inject(ActivatedRoute);

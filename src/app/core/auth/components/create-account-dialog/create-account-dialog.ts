@@ -96,7 +96,6 @@ export class CreateAccountDialog {
                     'Error creating account: ' + res.error.error,
                     'Close',
                     {
-                        duration: 3000,
                         panelClass: 'snackbar-error',
                     },
                 );

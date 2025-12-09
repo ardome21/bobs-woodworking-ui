@@ -5,6 +5,7 @@ import { ConfirmationSuccess } from './core/auth/components/confirmation-success
 import { BrowseProducts } from './components/containers/browse-products/browse-products';
 import { UpdateInventory } from './components/containers/update-inventory/update-inventory';
 import { AddInventory } from './components/containers/add-inventory/add-inventory';
+import { EditProductPage } from './components/containers/edit-product-page/edit-product-page';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,12 @@ export const routes: Routes = [
         path: 'product/:id',
         title: 'Product Details',
         component: ProductPage,
+        pathMatch: 'full',
+    },
+    {
+        path: 'product/:id/edit',
+        title: 'Edit Product',
+        component: EditProductPage,
         pathMatch: 'full',
     },
     {

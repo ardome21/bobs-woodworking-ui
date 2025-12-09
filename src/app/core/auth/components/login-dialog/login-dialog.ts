@@ -65,7 +65,6 @@ export class LoginDialog {
                     'Login failed: ' + res.error.error,
                     'Close',
                     {
-                        duration: 3000,
                         panelClass: 'snackbar-error',
                     },
                 );

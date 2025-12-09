@@ -1,18 +1,26 @@
 <h2 class="products-title">All Products</h2>
 <div class="products-container">
     @for (product of products; track product.id) {
-        <a
-            class="product-card"
-            [routerLink]="['/product', product.id]"
-            title="View {{ product.name }}"
-        >
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-card-title>{{ product.name }}</mat-card-title>
+                <mat-card-subtitle class="price"
+                    >${{ product.price }}</mat-card-subtitle
+                >
+            </mat-card-header>
             <img
-                [src]="product.imageUrl"
-                alt="{{ product.name }}"
-                class="product-image"
+                mat-card-image
+                src="{{ product.imageUrl }}"
+                alt="Photo of a {{ product.name }}"
             />
-            <h3>{{ product.name }}</h3>
-            <p class="price">${{ product.price }}</p>
-        </a>
+            <mat-card-actions class="card-actions">
+                <a
+                    matButton
+                    [routerLink]="['/product', product.id]"
+                    title="View {{ product.name }}"
+                    >View Product Details</a
+                >
+            </mat-card-actions>
+        </mat-card>
     }
 </div>

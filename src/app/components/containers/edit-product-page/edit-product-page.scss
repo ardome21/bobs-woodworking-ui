@@ -7,5 +7,6 @@ body {
 }
 
 .button-container {
-    justify-content: flex-center;
+    display: flex;
+    gap: 1rem;
 }

@@ -4,9 +4,10 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     min-height: 64px;
     height: auto;
+    background-color: var(--mat-sys-primary-container);
 }
 
 .logo-title {
@@ -41,8 +42,8 @@
 
 .nav-link {
     &.active {
-        background-color: var(--mat-sys-primary-container);
-        color: var(--mat-sys-on-primary-container);
+        background-color: var(--mat-sys-primary);
+        color: var(--mat-sys-on-primary);
         font-weight: 500;
     }
 }
@@ -60,6 +61,7 @@
     gap: 0.5rem;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .logout-button,
@@ -73,6 +75,9 @@
     .nav-links {
         flex-basis: 100%;
         order: 3;
+        border-top: 1px solid var(--mat-sys-outline);
+        padding-top: 0.5rem;
+        margin-top: 0;
     }
 }
 
@@ -80,6 +85,7 @@
     .header {
         justify-content: center;
         text-align: center;
+        gap: 0.5rem;
     }
 
     .logo-title,
@@ -87,5 +93,17 @@
     .user-section {
         flex-basis: 100%;
         justify-content: center;
+    }
+
+    .nav-links {
+        border-top: 1px solid var(--mat-sys-outline);
+        padding-top: 0.5rem;
+        margin-top: 0;
+    }
+
+    .user-section {
+        border-top: 1px solid var(--mat-sys-outline);
+        padding-top: 0.5rem;
+        margin-top: 0;
     }
 }

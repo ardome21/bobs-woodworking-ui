@@ -27,25 +27,30 @@ export const routes: Routes = [
     {
         path: 'update-inventory',
         title: 'Update Inventory',
-        component: UpdateInventory,
-        pathMatch: 'full',
-    },
-    {
-        path: 'update-inventory/add',
-        title: 'Add Inventory',
-        pathMatch: 'full',
-        component: AddInventory,
+        children: [
+            {
+                path: '',
+                pathMatch: 'full',
+                component: UpdateInventory,
+            },
+            {
+                path: 'add',
+                title: 'Add Inventory',
+                pathMatch: 'full',
+                component: AddInventory,
+            },
+            {
+                path: 'edit/:id',
+                title: 'Edit Product',
+                component: EditProductPage,
+                pathMatch: 'full',
+            },
+        ],
     },
     {
         path: 'product/:id',
         title: 'Product Details',
         component: ProductPage,
-        pathMatch: 'full',
-    },
-    {
-        path: 'product/:id/edit',
-        title: 'Edit Product',
-        component: EditProductPage,
         pathMatch: 'full',
     },
     {

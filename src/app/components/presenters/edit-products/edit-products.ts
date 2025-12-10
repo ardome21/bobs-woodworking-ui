@@ -2,10 +2,12 @@ import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../../models/products';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'app-edit-products',
-    imports: [RouterModule, MatButtonModule],
+    imports: [RouterModule, MatButtonModule, MatCheckboxModule, MatCardModule],
     templateUrl: './edit-products.html',
     styleUrl: './edit-products.scss',
 })

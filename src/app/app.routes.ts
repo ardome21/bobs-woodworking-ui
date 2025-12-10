@@ -20,16 +20,27 @@ export const routes: Routes = [
     },
     {
         path: 'browse-products',
-        title: 'Browse Products',
-        component: BrowseProducts,
-        pathMatch: 'full',
-    },
-    {
-        path: 'update-inventory',
-        title: 'Update Inventory',
         children: [
             {
                 path: '',
+                title: 'Browse Products',
+                component: BrowseProducts,
+                pathMatch: 'full',
+            },
+            {
+                path: 'product/:id',
+                title: 'Product Details',
+                component: ProductPage,
+                pathMatch: 'full',
+            },
+        ],
+    },
+    {
+        path: 'update-inventory',
+        children: [
+            {
+                path: '',
+                title: 'Update Inventory',
                 pathMatch: 'full',
                 component: UpdateInventory,
             },
@@ -46,12 +57,6 @@ export const routes: Routes = [
                 pathMatch: 'full',
             },
         ],
-    },
-    {
-        path: 'product/:id',
-        title: 'Product Details',
-        component: ProductPage,
-        pathMatch: 'full',
     },
     {
         path: 'confirmation-success',

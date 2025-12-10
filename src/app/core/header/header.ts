@@ -8,6 +8,7 @@ import { CreateAccountDialog } from '../auth/components/create-account-dialog/cr
 import { LoginDialog } from '../auth/components/login-dialog/login-dialog';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { UserRole } from '../../models/enums/user-profile-enum';
 
 @Component({
     selector: 'app-header',
@@ -29,13 +30,14 @@ export class Header {
 
     userProfile$ = this._userService.userProfile$;
     authChecked$ = this._userService.authChecked$;
+    readonly UserRole = UserRole;
 
-    pages = [
+    publicPages = [
         { title: 'Home', url: '/home' },
         { title: 'Browse Products', url: '/browse-products' },
-
-        { title: 'Update Inventory', url: '/update-inventory' },
     ];
+
+    adminPages = [{ title: 'Update Inventory', url: '/update-inventory' }];
 
     openCreateAccountDialog(event?: Event): void {
         if (event && event.target instanceof HTMLElement) {

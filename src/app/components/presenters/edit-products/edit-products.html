@@ -1,5 +1,5 @@
-<div class="header-actions">
-    @if (selectedProducts.size > 0) {
+@if (selectedProducts.size > 0) {
+    <div class="header-actions">
         <button
             mat-raised-button
             color="warn"
@@ -8,8 +8,8 @@
         >
             Delete Selected ({{ selectedProducts.size }})
         </button>
-    }
-</div>
+    </div>
+}
 
 <div class="products-container">
     @for (product of products; track product.id) {
@@ -47,7 +47,7 @@
                 mat-raised-button
                 color="primary"
                 class="edit-btn"
-                [routerLink]="['/product', product.id, 'edit']"
+                [routerLink]="['/update-inventory/edit', product.id]"
                 title="Edit {{ product.name }}"
             >
                 Edit
@@ -55,3 +55,4 @@
         </div>
     }
 </div>
+<router-outlet></router-outlet>

@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../../../models/products';
 import { Products } from '../../../services/products';
 import { EditProducts } from '../../presenters/edit-products/edit-products';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-update-inventory',
-    imports: [RouterModule, MatButtonModule, EditProducts],
+    imports: [RouterModule, MatButtonModule, EditProducts, MatIconModule],
     templateUrl: './update-inventory.html',
     styleUrl: './update-inventory.scss',
 })

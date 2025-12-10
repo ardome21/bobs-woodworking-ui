@@ -33,7 +33,7 @@
                     >
                     <button
                         (click)="logout()"
-                        mat-fab
+                        matButton="outlined"
                         extended
                         [title]="'Logout'"
                         aria-label="logout button"
@@ -47,7 +47,7 @@
                 <div class="logged-out">
                     <button
                         (click)="openLoginDialog($event)"
-                        mat-fab
+                        matButton="outlined"
                         extended
                         [title]="'Login'"
                         aria-label="login button"
@@ -58,7 +58,7 @@
                     </button>
                     <button
                         (click)="openCreateAccountDialog($event)"
-                        mat-fab
+                        matButton="outlined"
                         extended
                         [title]="'Sign Up'"
                         aria-label="sign up button"

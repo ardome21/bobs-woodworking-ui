@@ -87,7 +87,7 @@ export class CreateAccountDialog {
                 this.snackBar.open(
                     'Account Created! Please verify your email',
                     'Close',
-                    { duration: 6000, panelClass: 'snackbar-info' },
+                    { panelClass: 'snackbar-info' },
                 );
             },
             error: (res) => {

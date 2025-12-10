@@ -6,6 +6,7 @@ import { BrowseProducts } from './components/containers/browse-products/browse-p
 import { UpdateInventory } from './components/containers/update-inventory/update-inventory';
 import { AddInventory } from './components/containers/add-inventory/add-inventory';
 import { EditProductPage } from './components/containers/edit-product-page/edit-product-page';
+import { adminGuard } from './core/auth/services/auth.guard';
 
 export const routes: Routes = [
     {
@@ -37,6 +38,7 @@ export const routes: Routes = [
     },
     {
         path: 'update-inventory',
+        canActivate: [adminGuard],
         children: [
             {
                 path: '',

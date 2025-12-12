@@ -26,11 +26,16 @@ export class Auth {
     private _authApiService = inject(AuthApi);
     private _authAdapterService = inject(UserAdapter);
 
+    private _accessToken?: string;
+    private _accessTokenTimeout?: any;
+
     constructor() {
-        this.checkAuthStatus().subscribe({
-            next: () => this._authChecked.next(true),
-            error: () => this._authChecked.next(true),
-        });
+        setTimeout(() => {
+            this.checkAuthStatus().subscribe({
+                next: () => this._authChecked.next(true),
+                error: () => this._authChecked.next(true),
+            });
+        }, 0);
     }
 
     createUser(
@@ -45,8 +50,10 @@ export class Auth {
     }): Observable<{ message: string; user: UserData; success: string }> {
         return this._authApiService.login(loginData).pipe(
             tap((res) => {
+                this._accessToken = res.access_token;
                 const userProfile = this._authAdapterService.fromData(res.user);
                 this._userProfile.next(userProfile);
+                this.scheduleTokenRefresh();
             }),
         );
     }
@@ -61,10 +68,12 @@ export class Auth {
         return this._authApiService.verifyAuth().pipe(
             tap((res) => {
                 if (res.success === true) {
+                    this._accessToken = res.access_token;
                     const userProfile = this._authAdapterService.fromData(
                         res.user,
                     );
                     this._userProfile.next(userProfile);
+                    this.scheduleTokenRefresh();
                 } else {
                     this._userProfile.next(null);
                 }
@@ -79,5 +88,57 @@ export class Auth {
                 return of(null);
             }),
         );
+    }
+
+    private scheduleTokenRefresh(): void {
+        if (this._accessToken) {
+            clearTimeout(this._accessTokenTimeout);
+        }
+
+        const refreshTime = 28 * 60 * 1000;
+
+        this._accessTokenTimeout = setTimeout(() => {
+            this.refreshAccessToken().subscribe({
+                next: () => console.log('Access token refreshed successfully'),
+                error: (err) => console.error('Auto-refresh failed:', err),
+            });
+        }, refreshTime);
+    }
+    refreshAccessToken(): Observable<{
+        user: UserData;
+        access_token: string;
+        success: boolean;
+    }> {
+        return this._authApiService.verifyAuth().pipe(
+            tap((res) => {
+                if (res.success && res.access_token) {
+                    this._accessToken = res.access_token;
+                    const userProfile = this._authAdapterService.fromData(
+                        res.user,
+                    );
+                    this._userProfile.next(userProfile);
+                    this.scheduleTokenRefresh();
+                }
+            }),
+            catchError((error) => {
+                console.error('Token refresh failed:', error);
+                this.clearAuth();
+                throw error;
+            }),
+        );
+    }
+
+    private clearAuth(): void {
+        this._accessToken = undefined;
+        this._userProfile.next(null);
+
+        if (this._accessTokenTimeout) {
+            clearTimeout(this._accessTokenTimeout);
+            this._accessTokenTimeout = undefined;
+        }
+    }
+
+    get getAccessToken(): string | null {
+        return this._accessToken || null;
     }
 }

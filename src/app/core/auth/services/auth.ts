@@ -53,7 +53,6 @@ export class Auth {
                 this._accessToken = res.access_token;
                 const userProfile = this._authAdapterService.fromData(res.user);
                 this._userProfile.next(userProfile);
-                this.scheduleTokenRefresh();
             }),
         );
     }
@@ -73,7 +72,6 @@ export class Auth {
                         res.user,
                     );
                     this._userProfile.next(userProfile);
-                    this.scheduleTokenRefresh();
                 } else {
                     this._userProfile.next(null);
                 }
@@ -90,20 +88,6 @@ export class Auth {
         );
     }
 
-    private scheduleTokenRefresh(): void {
-        if (this._accessToken) {
-            clearTimeout(this._accessTokenTimeout);
-        }
-
-        const refreshTime = 28 * 60 * 1000;
-
-        this._accessTokenTimeout = setTimeout(() => {
-            this.refreshAccessToken().subscribe({
-                next: () => console.log('Access token refreshed successfully'),
-                error: (err) => console.error('Auto-refresh failed:', err),
-            });
-        }, refreshTime);
-    }
     refreshAccessToken(): Observable<{
         user: UserData;
         access_token: string;
@@ -117,7 +101,6 @@ export class Auth {
                         res.user,
                     );
                     this._userProfile.next(userProfile);
-                    this.scheduleTokenRefresh();
                 }
             }),
             catchError((error) => {

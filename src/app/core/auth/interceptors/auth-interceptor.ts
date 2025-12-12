@@ -46,7 +46,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
                 return handle401Error(authReq, next, authService, router);
             } else if (error.status === 403) {
                 console.error('Forbidden: Insufficient permissions');
-                // router.navigate(['/unauthorized']); TODO: Implement unauthorized page
             }
 
             return throwError(() => error);

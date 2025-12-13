@@ -1,11 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    signal,
+    SimpleChanges,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-add-inventory-form',
@@ -20,12 +31,30 @@ import { RouterModule } from '@angular/router';
     templateUrl: './add-inventory-form.html',
     styleUrl: './add-inventory-form.scss',
 })
-export class AddInventoryForm {
+export class AddInventoryForm implements OnInit, OnDestroy {
     @Input() formGroup!: FormGroup;
     @Output() formSubmit = new EventEmitter<void>();
 
     selectedFiles: File[] = [];
     previewUrls = signal<string[]>([]);
+    private destroy$ = new Subject<void>();
+
+    ngOnInit() {
+        // Watch for form reset - when images control becomes null
+        this.formGroup.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((values) => {
+                // If images is null and we have files selected, clear them
+                if (!values.images && this.selectedFiles.length > 0) {
+                    this.resetFileSelection();
+                }
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     onFileSelect(event: Event) {
         const input = event.target as HTMLInputElement;
@@ -48,6 +77,26 @@ export class AddInventoryForm {
         }
         console.log('FormGroup after file select:', this.formGroup.value);
         console.log('Preview URLs:', this.previewUrls);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['formGroup']) {
+            const currentValue = this.formGroup?.value;
+            if (
+                currentValue &&
+                !currentValue.title &&
+                !currentValue.description &&
+                !currentValue.price &&
+                !currentValue.images
+            ) {
+                this.resetFileSelection();
+            }
+        }
+    }
+
+    private resetFileSelection() {
+        this.selectedFiles = [];
+        this.previewUrls.set([]);
     }
 
     removeImage(index: number) {

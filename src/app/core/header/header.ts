@@ -55,5 +55,6 @@ export class Header {
 
     logout(): void {
         this._userService.logout();
+        window.location.reload();
     }
 }

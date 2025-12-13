@@ -29,6 +29,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     let authReq = req;
 
     const token = authService.getAccessToken;
+    console.log('AuthInterceptor - attaching token:', token);
     if (token) {
         authReq = req.clone({
             setHeaders: {

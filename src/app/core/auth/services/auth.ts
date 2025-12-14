@@ -60,6 +60,7 @@ export class Auth {
     logout(): void {
         this._authApiService.logout().subscribe(() => {
             this._userProfile.next(null);
+            window.location.reload();
         });
     }
 

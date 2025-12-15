@@ -3,8 +3,6 @@ import { ProductsApi } from '../repository/services/products-api';
 import { Product } from '../models/products';
 import { map, Observable } from 'rxjs';
 import { ProductsAdapter } from './adapters/products-adapter';
-import { ProductData } from '../repository/types/products';
-import { Form } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root',

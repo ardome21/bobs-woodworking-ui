@@ -16,9 +16,6 @@
 
 .product-card {
     background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
     position: relative;
 }
@@ -58,6 +55,8 @@
     justify-content: space-between;
     width: 100%;
     margin-bottom: 1rem;
+
+    object-fit: contain;
 }
 
 .product-image {
@@ -70,7 +69,10 @@
     color: var(--mat-sys-tertiary);
 }
 
+.card-actions {
+    justify-content: center;
+}
+
 .edit-btn {
     width: 100%;
-    margin-top: auto;
 }

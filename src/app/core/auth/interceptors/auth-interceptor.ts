@@ -28,7 +28,12 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
     let authReq = req;
 
+    if (req.url.includes('/login') || req.url.includes('/logout')) {
+        return next(req.clone({ withCredentials: true }));
+    }
+
     const token = authService.getAccessToken;
+    console.log('AuthInterceptor - attaching token:', token);
     if (token) {
         authReq = req.clone({
             setHeaders: {
@@ -72,13 +77,14 @@ function handle401Error(
                     setHeaders: {
                         Authorization: `Bearer ${newToken}`,
                     },
+                    withCredentials: true,
                 });
 
                 return next(authReq);
             }),
             catchError((err) => {
                 isRefreshing = false;
-
+                refreshTokenSubject.next(null);
                 // Refresh token expired - logout
                 console.error('Refresh token expired, logging out...');
                 authService.logout();
@@ -97,6 +103,7 @@ function handle401Error(
                     setHeaders: {
                         Authorization: `Bearer ${token!}`, // Non-null assertion is safe here
                     },
+                    withCredentials: true,
                 });
                 return next(authReq);
             }),

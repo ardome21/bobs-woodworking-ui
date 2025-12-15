@@ -6,7 +6,13 @@ import { ProductData } from '../../repository/types/products';
 })
 export class ProductsAdapter {
     static adapt(data: ProductData): Product {
-        return data;
+        return {
+            id: data.id,
+            name: data.title,
+            price: data.price,
+            imageUrl: data.images ? data.images[0] : '',
+            description: data.description,
+        };
     }
 
     static adaptMany(dataArray: ProductData[]): Product[] {

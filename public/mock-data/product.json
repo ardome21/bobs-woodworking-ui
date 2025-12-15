@@ -1,7 +1,7 @@
 {
     "id": 1,
-    "name": "Custom Dining Table",
+    "title": "Custom Dining Table",
     "description": "A beautifully handcrafted custom dining table made from premium oak wood. Perfect for family gatherings and special occasions.",
     "price": 1200,
-    "imageUrl": "../generic_image.jpg"
+    "images": ["../generic_image.jpg"]
 }

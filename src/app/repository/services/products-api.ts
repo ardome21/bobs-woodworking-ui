@@ -16,8 +16,15 @@ export class ProductsApi {
     private getProductsUrl = '/mock-data/products.json';
     private getProductByIdUrl = '/mock-data/product.json';
 
-    getProducts(): Observable<ProductData[]> {
-        return this.http.get<ProductData[]>(this.getProductsUrl);
+    getProducts(): Observable<{
+        products: ProductData[];
+    }> {
+        return this.http.get<{
+            products: ProductData[];
+        }>(this.baseUrl + '/products');
+        // return this.http.get<{
+        //     products: ProductData[];
+        // }>(this.getProductsUrl);
     }
 
     getProductById(id: number): Observable<ProductData> {
@@ -27,6 +34,9 @@ export class ProductsApi {
 
     addProduct(formData: FormData): Observable<any> {
         console.log('ProductsApi - adding product:', formData);
-        return this.http.post<any>(this.baseUrl + '/add-product', formData);
+        return this.http.post<{
+            message: string;
+            product: ProductData;
+        }>(this.baseUrl + '/product', formData);
     }
 }

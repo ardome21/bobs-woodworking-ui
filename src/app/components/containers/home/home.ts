@@ -7,7 +7,7 @@ import { Test } from '../../../repository/services/test';
 
 @Component({
     selector: 'app-home',
-    imports: [BrowseProducts],
+    imports: [ProductsList],
     templateUrl: './home.html',
     styleUrl: './home.scss',
 })

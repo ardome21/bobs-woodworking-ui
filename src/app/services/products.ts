@@ -15,7 +15,7 @@ export class Products {
     getProducts(): Observable<Product[]> {
         return this.productsApi
             .getProducts()
-            .pipe(map((data) => ProductsAdapter.adaptMany(data)));
+            .pipe(map((data) => ProductsAdapter.adaptMany(data.products)));
     }
 
     getProductById(id: number): Observable<Product> {

@@ -17,6 +17,7 @@ import { ProductsApi } from '../../../repository/services/products-api';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../../../services/loading.service';
+import { Products } from '../../../services/products';
 
 @Component({
     selector: 'app-product-details',
@@ -38,6 +39,7 @@ export class ProductDetails {
     @Output() productUpdated = new EventEmitter<void>();
 
     private productsApi = inject(ProductsApi);
+    private productsService = inject(Products);
     private router = inject(Router);
     private loadingService = inject(LoadingService);
 
@@ -51,9 +53,7 @@ export class ProductDetails {
     selectedFile: File | null = null;
     previewImageUrl = signal<string | null>(null);
 
-    isSaving = computed(() =>
-        this.loadingService.isLoadingKey('product-save')
-    );
+    isSaving = computed(() => this.loadingService.isLoadingKey('product-save'));
 
     ngOnChanges(): void {
         if (this.product && this.editView) {
@@ -73,7 +73,8 @@ export class ProductDetails {
         return (
             this.editedProduct.name !== this.product.name ||
             this.editedProduct.price !== this.product.price ||
-            this.editedProduct.description !== (this.product.description || '') ||
+            this.editedProduct.description !==
+                (this.product.description || '') ||
             this.selectedFile !== null
         );
     }
@@ -114,6 +115,14 @@ export class ProductDetails {
                 this.productUpdated.emit();
                 this.selectedFile = null;
                 this.previewImageUrl.set(null);
+            },
+            error: (error) => {
+                console.error('Error updating product:', error);
+            },
+        });
+        this.productsService.getProductById(this.product.id).subscribe({
+            next: (response) => {
+                this.product = response;
                 this.loadingService.setLoading('product-save', false);
             },
             error: (error) => {
@@ -126,7 +135,9 @@ export class ProductDetails {
     deleteProduct(): void {
         if (!this.product) return;
 
-        if (confirm(`Are you sure you want to delete "${this.product.name}"?`)) {
+        if (
+            confirm(`Are you sure you want to delete "${this.product.name}"?`)
+        ) {
             this.loadingService.setLoading('product-delete', true);
             this.productsApi.deleteProduct(this.product.id).subscribe({
                 next: (response) => {

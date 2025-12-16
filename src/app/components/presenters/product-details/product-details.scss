@@ -29,3 +29,13 @@
 .price {
     color: var(--mat-sys-tertiary);
 }
+
+@media (max-width: 768px) {
+    .product-card {
+        flex-direction: column;
+    }
+
+    .product-image {
+        max-height: 400px;
+    }
+}

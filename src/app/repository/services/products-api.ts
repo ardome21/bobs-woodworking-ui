@@ -12,24 +12,18 @@ export class ProductsApi {
 
     baseUrl = environment.apiUrl;
 
-    // FIXME: Switch with real URL
-    private getProductsUrl = '/mock-data/products.json';
-    private getProductByIdUrl = '/mock-data/product.json';
-
     getProducts(): Observable<{
         products: ProductData[];
     }> {
         return this.http.get<{
             products: ProductData[];
         }>(this.baseUrl + '/products');
-        // return this.http.get<{
-        //     products: ProductData[];
-        // }>(this.getProductsUrl);
     }
 
-    getProductById(id: number): Observable<ProductData> {
-        // FIXME: Use the id to fetch the correct product
-        return this.http.get<ProductData>(this.getProductByIdUrl);
+    getProductById(id: number): Observable<{ product: ProductData }> {
+        return this.http.get<{
+            product: ProductData;
+        }>(`${this.baseUrl}/products/${id}`);
     }
 
     addProduct(formData: FormData): Observable<any> {
@@ -37,6 +31,6 @@ export class ProductsApi {
         return this.http.post<{
             message: string;
             product: ProductData;
-        }>(this.baseUrl + '/product', formData);
+        }>(this.baseUrl + '/products', formData);
     }
 }

@@ -18,6 +18,7 @@ export class Home implements OnInit {
 
     ngOnInit() {
         this.loadProducts();
+        // this.testAuth();
     }
 
     loadProducts() {

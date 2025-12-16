@@ -19,7 +19,7 @@ export class Products {
     getProductById(id: number): Observable<Product> {
         return this.productsApi
             .getProductById(id)
-            .pipe(map((data) => ProductsAdapter.adapt(data)));
+            .pipe(map((data) => ProductsAdapter.adapt(data.product)));
     }
 
     addProduct(formData: FormData): Observable<any> {

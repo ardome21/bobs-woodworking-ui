@@ -1,0 +1,24 @@
+# Bob's Woodworking UI - Cursor Rules
+
+## Architecture Enforcement
+
+### Presenter/Container Pattern
+- Presenters (presenters/): Dumb, emit events, no business logic
+- Containers (containers/): Smart, inject domain services ONLY
+
+### Repository Pattern - CRITICAL
+**Containers MUST inject domain services, NOT API services**
+
+❌ Wrong: `private productsApi = inject(ProductsApi)`
+✅ Correct: `private productService = inject(Products)`
+
+### Service Injection Rules
+- Presenters: UI services only (FocusMonitor, AnimationBuilder)
+- Containers: Domain services only (Products, Auth)
+- API services: Called ONLY by domain services
+
+### Before Completing Tasks
+- Verify no containers inject API services
+- Verify no presenters inject business services
+- Verify all API calls go through domain services
+- See ARCHITECTURE.md for examples

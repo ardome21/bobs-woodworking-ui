@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { Products } from '../../../services/products';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
     selector: 'app-add-inventory',
@@ -26,8 +27,8 @@ export class AddInventory {
     inventoryForm: FormGroup;
 
     private _productService = inject(Products);
-
     private snackBar = inject(MatSnackBar);
+    private loadingService = inject(LoadingService);
 
     constructor(private fb: FormBuilder) {
         this.inventoryForm = this.fb.group({
@@ -53,9 +54,11 @@ export class AddInventory {
                     formData.append('images', file);
                 });
             }
+            this.loadingService.setLoading('add-product', true);
             this._productService.addProduct(formData).subscribe({
                 next: () => {
                     console.log('Product added successfully');
+                    this.loadingService.setLoading('add-product', false);
                     this.snackBar.open('Product added successfully!', 'Close', {
                         duration: 3000,
                         panelClass: 'snackbar-success',
@@ -69,6 +72,7 @@ export class AddInventory {
                 },
                 error: (res) => {
                     console.error('Error adding product:', res);
+                    this.loadingService.setLoading('add-product', false);
                     this.snackBar.open(
                         'Error adding product: ' + res.error.error,
                         'Close',

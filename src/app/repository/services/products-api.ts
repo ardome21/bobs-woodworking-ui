@@ -33,4 +33,29 @@ export class ProductsApi {
             product: ProductData;
         }>(this.baseUrl + '/products', formData);
     }
+
+    updateProduct(
+        productId: number,
+        formData: FormData
+    ): Observable<{ message: string; product: ProductData }> {
+        return this.http.put<{ message: string; product: ProductData }>(
+            `${this.baseUrl}/products/${productId}`,
+            formData
+        );
+    }
+
+    deleteProduct(productId: number): Observable<any> {
+        return this.http.delete<{ message: string }>(
+            `${this.baseUrl}/products/${productId}`
+        );
+    }
+
+    deleteProducts(productIds: number[]): Observable<any> {
+        return this.http.delete<{ message: string }>(
+            this.baseUrl + '/products',
+            {
+                body: { product_ids: productIds },
+            }
+        );
+    }
 }

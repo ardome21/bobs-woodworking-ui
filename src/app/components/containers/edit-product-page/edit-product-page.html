@@ -2,6 +2,9 @@
     <app-product-details
         [product]="product()"
         [editView]="true"
+        [isSaving]="isSaving()"
+        (productUpdated)="onProductUpdated($event)"
+        (productDeleted)="onProductDeleted($event)"
     ></app-product-details>
     <div class="button-container">
         <button routerLink="/products" matButton="tonal">Back to Home</button>

@@ -1,0 +1,26 @@
+# Bob's Woodworking UI - Architecture Rules
+
+## CRITICAL: Enforce These Patterns
+
+### 1. Container/Presenter Pattern
+- **Presenters** (src/app/components/presenters/): Dumb, UI only, emit events
+- **Containers** (src/app/components/containers/): Smart, inject domain services
+
+### 2. Repository Pattern
+- **Containers MUST inject domain services** (e.g., `Products`)
+- **Containers MUST NOT inject API services** (e.g., `ProductsApi`)
+- All API calls go through domain services → adapters → API services
+
+### 3. Service Injection
+- Presenters: Only UI services (FocusMonitor, AnimationBuilder)
+- Containers: Only domain services (Products, NOT ProductsApi)
+- API services: Only called by domain services
+
+### 4. Code Review Checklist
+Before completing tasks:
+- [ ] No presenters inject business services
+- [ ] No containers inject API services
+- [ ] Presenters emit events, not call services
+- [ ] All API responses go through adapters
+
+See ARCHITECTURE.md for detailed patterns and examples.

@@ -1,18 +1,50 @@
 @if (product) {
     <div class="products-container">
         <mat-card appearance="outlined" class="product-card">
-            <div class="image-container">
-                <img
-                    [src]="previewImageUrl() || product.imageUrl"
-                    alt="{{ product.name }}"
-                    class="product-image"
-                />
-                @if (editView) {
-                    <div class="image-upload">
+            @if (editView) {
+                <div class="image-gallery">
+                    @for (imageUrl of product.imageUrls; track $index; let i = $index) {
+                        @if (!isImageMarkedForDeletion(i)) {
+                            <div class="image-item">
+                                <img
+                                    [src]="imageUrl"
+                                    alt="{{ product.name }} - Image {{ i + 1 }}"
+                                    class="gallery-image"
+                                />
+                                <button
+                                    mat-icon-button
+                                    class="delete-image-btn"
+                                    (click)="deleteExistingImage(i, $event)"
+                                    title="Delete image"
+                                >
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        }
+                    }
+                    @for (previewUrl of previewImageUrls(); track $index; let i = $index) {
+                        <div class="image-item preview-item">
+                            <img
+                                [src]="previewUrl"
+                                alt="New image {{ i + 1 }}"
+                                class="gallery-image"
+                            />
+                            <button
+                                mat-icon-button
+                                class="delete-image-btn"
+                                (click)="deletePreviewImage(i, $event)"
+                                title="Delete image"
+                            >
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    }
+                    <div class="image-upload-container">
                         <input
                             #imageUpload
                             type="file"
                             accept="image/*"
+                            multiple
                             (change)="onFileSelected($event)"
                             hidden
                         />
@@ -21,13 +53,40 @@
                             color="primary"
                             type="button"
                             (click)="imageUpload.click()"
+                            class="add-images-btn"
                         >
-                            <mat-icon>upload</mat-icon>
-                            Change Image
+                            <mat-icon>add_photo_alternate</mat-icon>
+                            Add Images
                         </button>
                     </div>
-                }
-            </div>
+                </div>
+            } @else {
+                <div class="image-container">
+                    <img
+                        [src]="getCurrentImageUrl()"
+                        alt="{{ product.name }}"
+                        class="product-image"
+                    />
+                    @if (hasMultipleImages()) {
+                        <button
+                            mat-icon-button
+                            class="nav-button prev-button"
+                            (click)="previousImage($event)"
+                            title="Previous image"
+                        >
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            class="nav-button next-button"
+                            (click)="nextImage($event)"
+                            title="Next image"
+                        >
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    }
+                </div>
+            }
             <div class="product-info">
                 <mat-card-header>
                     <div class="header-content">
@@ -90,10 +149,10 @@
                         <button
                             mat-raised-button
                             color="primary"
-                            [disabled]="!hasChanges() || isSaving()"
+                            [disabled]="!hasChanges() || isSaving"
                             (click)="saveChanges()"
                         >
-                            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+                            {{ isSaving ? 'Saving...' : 'Save Changes' }}
                         </button>
                     </mat-card-actions>
                 }

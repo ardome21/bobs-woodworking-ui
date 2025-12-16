@@ -2,7 +2,7 @@
     <div class="header-actions">
         <button
             matButton="filled"
-            (click)="deleteSelected()"
+            (click)="onDeleteSelected()"
             class="bulk-delete-btn"
         >
             Delete Selected ({{ selectedProducts.size }})
@@ -25,7 +25,7 @@
                     color="warn"
                     class="delete-btn"
                     (click)="
-                        deleteProduct(product.id); $event.stopPropagation()
+                        onDeleteProduct(product.id); $event.stopPropagation()
                     "
                     title="Delete {{ product.name }}"
                 >
@@ -33,11 +33,32 @@
                 </button>
             </div>
 
-            <img
-                mat-card-image
-                [src]="product.imageUrl"
-                alt="{{ product.name }}"
-            />
+            <div class="image-container">
+                <img
+                    mat-card-image
+                    [src]="getCurrentImageUrl(product)"
+                    alt="{{ product.name }}"
+                    class="product-image"
+                />
+                @if (hasMultipleImages(product)) {
+                    <button
+                        mat-icon-button
+                        class="nav-button prev-button"
+                        (click)="previousImage(product.id, product, $event)"
+                        title="Previous image"
+                    >
+                        <mat-icon>chevron_left</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        class="nav-button next-button"
+                        (click)="nextImage(product.id, product, $event)"
+                        title="Next image"
+                    >
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                }
+            </div>
             <mat-card-title>{{ product.name }}</mat-card-title>
             <mat-card-subtitle class="price"
                 >${{ product.price }}</mat-card-subtitle

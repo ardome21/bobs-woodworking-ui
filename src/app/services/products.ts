@@ -26,4 +26,18 @@ export class Products {
         console.log('Products service - adding product:', formData);
         return this.productsApi.addProduct(formData);
     }
+
+    updateProduct(productId: number, formData: FormData): Observable<Product> {
+        return this.productsApi
+            .updateProduct(productId, formData)
+            .pipe(map((data) => ProductsAdapter.adapt(data.product)));
+    }
+
+    deleteProduct(productId: number): Observable<any> {
+        return this.productsApi.deleteProduct(productId);
+    }
+
+    deleteProducts(productIds: number[]): Observable<any> {
+        return this.productsApi.deleteProducts(productIds);
+    }
 }

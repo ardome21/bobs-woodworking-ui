@@ -3,8 +3,6 @@ import { ProductsApi } from '../repository/services/products-api';
 import { Product } from '../models/products';
 import { map, Observable } from 'rxjs';
 import { ProductsAdapter } from './adapters/products-adapter';
-import { ProductData } from '../repository/types/products';
-import { Form } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root',
@@ -21,7 +19,7 @@ export class Products {
     getProductById(id: number): Observable<Product> {
         return this.productsApi
             .getProductById(id)
-            .pipe(map((data) => ProductsAdapter.adapt(data)));
+            .pipe(map((data) => ProductsAdapter.adapt(data.product)));
     }
 
     addProduct(formData: FormData): Observable<any> {

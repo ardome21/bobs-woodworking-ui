@@ -33,16 +33,14 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     }
 
     const token = authService.getAccessToken;
-    console.log('AuthInterceptor - attaching token:', token);
     if (token) {
         authReq = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${token}`,
             },
-            withCredentials: true,
         });
     } else {
-        authReq = req.clone({ withCredentials: true });
+        authReq = req.clone();
     }
 
     return next(authReq).pipe(
@@ -77,7 +75,6 @@ function handle401Error(
                     setHeaders: {
                         Authorization: `Bearer ${newToken}`,
                     },
-                    withCredentials: true,
                 });
 
                 return next(authReq);
@@ -103,7 +100,6 @@ function handle401Error(
                     setHeaders: {
                         Authorization: `Bearer ${token!}`, // Non-null assertion is safe here
                     },
-                    withCredentials: true,
                 });
                 return next(authReq);
             }),

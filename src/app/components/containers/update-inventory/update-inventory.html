@@ -12,5 +12,8 @@
         <mat-icon class="arrow-icon">arrow_forward</mat-icon>
     </a>
 </div>
-<app-edit-products [products]="products()"></app-edit-products>
+<app-edit-products
+    [products]="products()"
+    (productsDeleted)="loadProducts()"
+></app-edit-products>
 <router-outlet></router-outlet>

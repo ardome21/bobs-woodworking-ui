@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../../models/products';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+import { ProductsApi } from '../../../repository/services/products-api';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
     selector: 'app-edit-products',
@@ -13,9 +15,13 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class EditProducts {
     @Input() products: Product[] = [];
-    selectedProducts = new Set<string | number>();
+    @Output() productsDeleted = new EventEmitter<void>();
+    selectedProducts = new Set<number>();
 
-    toggleSelection(productId: string | number): void {
+    private productsApi = inject(ProductsApi);
+    private loadingService = inject(LoadingService);
+
+    toggleSelection(productId: number): void {
         if (this.selectedProducts.has(productId)) {
             this.selectedProducts.delete(productId);
         } else {
@@ -23,14 +29,35 @@ export class EditProducts {
         }
     }
 
-    deleteProduct(productId: string | number): void {
-        console.log('Deleting product:', productId);
-        // TODO: Implement actual delete logic here
+    deleteProduct(productId: number): void {
+        this.loadingService.setLoading('delete-single-product', true);
+        this.productsApi.deleteProduct(productId).subscribe({
+            next: (response) => {
+                console.log('Product deleted:', response);
+                this.loadingService.setLoading('delete-single-product', false);
+                this.productsDeleted.emit();
+            },
+            error: (error) => {
+                console.error('Error deleting product:', error);
+                this.loadingService.setLoading('delete-single-product', false);
+            },
+        });
     }
 
     deleteSelected(): void {
-        console.log('Deleting products:', Array.from(this.selectedProducts));
-        // TODO: Implement actual bulk delete logic here
-        this.selectedProducts.clear();
+        const productIds = Array.from(this.selectedProducts);
+        this.loadingService.setLoading('delete-bulk-products', true);
+        this.productsApi.deleteProducts(productIds).subscribe({
+            next: (response) => {
+                console.log('Products deleted:', response);
+                this.selectedProducts.clear();
+                this.loadingService.setLoading('delete-bulk-products', false);
+                this.productsDeleted.emit();
+            },
+            error: (error) => {
+                console.error('Error deleting products:', error);
+                this.loadingService.setLoading('delete-bulk-products', false);
+            },
+        });
     }
 }

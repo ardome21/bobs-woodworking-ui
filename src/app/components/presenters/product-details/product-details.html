@@ -1,15 +1,104 @@
 @if (product) {
     <div class="products-container">
-        <div class="product-card">
-            <h1>{{ product.name }}</h1>
-            <img
-                [src]="product.imageUrl"
-                alt="{{ product.name }}"
-                class="product-image"
-            />
-            <p>${{ product.price }}</p>
-            <p>{{ product.description }}</p>
-        </div>
+        <mat-card appearance="outlined" class="product-card">
+            <div class="image-container">
+                <img
+                    [src]="previewImageUrl() || product.imageUrl"
+                    alt="{{ product.name }}"
+                    class="product-image"
+                />
+                @if (editView) {
+                    <div class="image-upload">
+                        <input
+                            #imageUpload
+                            type="file"
+                            accept="image/*"
+                            (change)="onFileSelected($event)"
+                            hidden
+                        />
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            type="button"
+                            (click)="imageUpload.click()"
+                        >
+                            <mat-icon>upload</mat-icon>
+                            Change Image
+                        </button>
+                    </div>
+                }
+            </div>
+            <div class="product-info">
+                <mat-card-header>
+                    <div class="header-content">
+                        <div class="title-section">
+                            @if (editView && editedProduct) {
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Product Name</mat-label>
+                                    <input
+                                        matInput
+                                        [(ngModel)]="editedProduct.name"
+                                        required
+                                    />
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Price</mat-label>
+                                    <input
+                                        matInput
+                                        type="number"
+                                        [(ngModel)]="editedProduct.price"
+                                        required
+                                    />
+                                    <span matTextPrefix>$&nbsp;</span>
+                                </mat-form-field>
+                            } @else {
+                                <mat-card-title>{{ product.name }}</mat-card-title>
+                                <mat-card-subtitle class="price"
+                                    >${{ product.price }}</mat-card-subtitle
+                                >
+                            }
+                        </div>
+                        @if (editView) {
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="deleteProduct()"
+                                class="delete-button"
+                                title="Delete product"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        }
+                    </div>
+                </mat-card-header>
+                <mat-card-content>
+                    @if (editView && editedProduct) {
+                        <mat-form-field appearance="outline" class="description-field">
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                [(ngModel)]="editedProduct.description"
+                                rows="5"
+                            ></textarea>
+                        </mat-form-field>
+                    } @else {
+                        <p>{{ product.description }}</p>
+                    }
+                </mat-card-content>
+                @if (editView) {
+                    <mat-card-actions>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            [disabled]="!hasChanges() || isSaving()"
+                            (click)="saveChanges()"
+                        >
+                            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+                        </button>
+                    </mat-card-actions>
+                }
+            </div>
+        </mat-card>
     </div>
 } @else {
     <p>Loading product details...</p>

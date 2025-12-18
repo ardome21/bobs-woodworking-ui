@@ -1,0 +1,60 @@
+<div class="checkout-container">
+    <h1>Checkout</h1>
+
+    @if (cartItems.length > 0) {
+        <div class="checkout-content">
+            <div class="checkout-form-section">
+                @if (stripeElements) {
+                    <app-checkout-form
+                        [stripeElements]="stripeElements"
+                        (formReady)="onFormReady($event)">
+                    </app-checkout-form>
+                } @else {
+                    <div class="loading-stripe">
+                        <mat-spinner diameter="40"></mat-spinner>
+                        <p>Loading payment system...</p>
+                    </div>
+                }
+
+                <div class="action-buttons">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        class="place-order-btn"
+                        [disabled]="isProcessing || !isFormReady"
+                        (click)="placeOrder()">
+                        @if (isProcessing) {
+                            <mat-spinner diameter="20"></mat-spinner>
+                            Processing...
+                        } @else {
+                            Place Order
+                        }
+                    </button>
+                    <button
+                        mat-button
+                        routerLink="/cart"
+                        [disabled]="isProcessing">
+                        Back to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="order-summary-section">
+                <app-order-summary
+                    [items]="cartItems"
+                    [subtotal]="subtotal"
+                    [total]="total">
+                </app-order-summary>
+            </div>
+        </div>
+    } @else {
+        <div class="empty-cart">
+            <mat-icon class="empty-icon">shopping_cart</mat-icon>
+            <h2>Your cart is empty</h2>
+            <p>Add some products before checking out.</p>
+            <button mat-raised-button color="primary" routerLink="/browse-products">
+                Browse Products
+            </button>
+        </div>
+    }
+</div>

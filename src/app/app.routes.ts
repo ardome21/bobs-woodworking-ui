@@ -7,6 +7,7 @@ import { UpdateInventory } from './components/containers/update-inventory/update
 import { AddInventory } from './components/containers/add-inventory/add-inventory';
 import { EditProductPage } from './components/containers/edit-product-page/edit-product-page';
 import { Cart } from './components/containers/cart/cart';
+import { Checkout } from './components/containers/checkout/checkout';
 import { adminGuard } from './core/auth/services/auth.guard';
 
 export const routes: Routes = [
@@ -41,6 +42,12 @@ export const routes: Routes = [
         path: 'cart',
         title: 'Shopping Cart',
         component: Cart,
+        pathMatch: 'full',
+    },
+    {
+        path: 'checkout',
+        title: 'Checkout',
+        component: Checkout,
         pathMatch: 'full',
     },
     {

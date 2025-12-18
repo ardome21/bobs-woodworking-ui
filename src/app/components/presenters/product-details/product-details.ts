@@ -37,6 +37,7 @@ export class ProductDetails {
     @Input() isSaving: boolean = false;
     @Output() productDeleted = new EventEmitter<number>();
     @Output() productUpdated = new EventEmitter<ProductUpdateData>();
+    @Output() addedToCart = new EventEmitter<{ product: Product; quantity: number }>();
 
     editedProduct: {
         name: string;
@@ -49,6 +50,7 @@ export class ProductDetails {
     previewImageUrls = signal<string[]>([]);
     currentImageIndex: number = 0;
     imagesToDelete: Set<number> = new Set();
+    quantity: number = 1;
 
     ngOnChanges(): void {
         if (this.product && this.editView) {
@@ -216,5 +218,17 @@ export class ProductDetails {
 
     isImageMarkedForDeletion(index: number): boolean {
         return this.imagesToDelete.has(index);
+    }
+
+    addToCart(): void {
+        if (!this.product) return;
+
+        this.addedToCart.emit({
+            product: this.product,
+            quantity: this.quantity
+        });
+
+        // Reset quantity after adding
+        this.quantity = 1;
     }
 }

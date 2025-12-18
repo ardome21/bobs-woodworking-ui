@@ -6,6 +6,7 @@ import { BrowseProducts } from './components/containers/browse-products/browse-p
 import { UpdateInventory } from './components/containers/update-inventory/update-inventory';
 import { AddInventory } from './components/containers/add-inventory/add-inventory';
 import { EditProductPage } from './components/containers/edit-product-page/edit-product-page';
+import { Cart } from './components/containers/cart/cart';
 import { adminGuard } from './core/auth/services/auth.guard';
 
 export const routes: Routes = [
@@ -35,6 +36,12 @@ export const routes: Routes = [
                 pathMatch: 'full',
             },
         ],
+    },
+    {
+        path: 'cart',
+        title: 'Shopping Cart',
+        component: Cart,
+        pathMatch: 'full',
     },
     {
         path: 'update-inventory',

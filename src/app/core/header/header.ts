@@ -3,12 +3,14 @@ import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 import { Auth } from '../auth/services/auth';
 import { CreateAccountDialog } from '../auth/components/create-account-dialog/create-account-dialog';
 import { LoginDialog } from '../auth/components/login-dialog/login-dialog';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserRole } from '../../models/enums/user-profile-enum';
+import { CartService } from '../../services/cart';
 
 @Component({
     selector: 'app-header',
@@ -16,6 +18,7 @@ import { UserRole } from '../../models/enums/user-profile-enum';
         RouterModule,
         MatButtonModule,
         MatIconModule,
+        MatBadgeModule,
         CommonModule,
         MatToolbarModule,
     ],
@@ -27,10 +30,12 @@ export class Header {
 
     readonly dialog = inject(MatDialog);
     private readonly _userService = inject(Auth);
+    private readonly cartService = inject(CartService);
 
     userProfile$ = this._userService.userProfile$;
     authChecked$ = this._userService.authChecked$;
     readonly UserRole = UserRole;
+    cartItemCount = this.cartService.itemCount;
 
     publicPages = [
         { title: 'Home', url: '/home' },

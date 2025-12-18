@@ -1,5 +1,8 @@
 <body>
-    <app-product-details [product]="product()"></app-product-details>
+    <app-product-details
+        [product]="product()"
+        (addedToCart)="onAddedToCart($event)">
+    </app-product-details>
     <button matButton="tonal" routerLink="/browse-products">
         Back to Products
     </button>

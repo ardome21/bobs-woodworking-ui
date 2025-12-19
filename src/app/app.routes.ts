@@ -8,7 +8,10 @@ import { AddInventory } from './components/containers/add-inventory/add-inventor
 import { EditProductPage } from './components/containers/edit-product-page/edit-product-page';
 import { Cart } from './components/containers/cart/cart';
 import { Checkout } from './components/containers/checkout/checkout';
-import { adminGuard } from './core/auth/services/auth.guard';
+import { OrderConfirmation } from './components/containers/order-confirmation/order-confirmation';
+import { OrderHistory } from './components/containers/order-history/order-history';
+import { OrderDetails } from './components/containers/order-details/order-details';
+import { adminGuard, authGuard } from './core/auth/services/auth.guard';
 
 export const routes: Routes = [
     {
@@ -48,6 +51,26 @@ export const routes: Routes = [
         path: 'checkout',
         title: 'Checkout',
         component: Checkout,
+        pathMatch: 'full',
+    },
+    {
+        path: 'order-confirmation/:orderId',
+        title: 'Order Confirmation',
+        component: OrderConfirmation,
+        pathMatch: 'full',
+    },
+    {
+        path: 'orders',
+        title: 'My Orders',
+        component: OrderHistory,
+        canActivate: [authGuard],
+        pathMatch: 'full',
+    },
+    {
+        path: 'orders/:orderId',
+        title: 'Order Details',
+        component: OrderDetails,
+        canActivate: [authGuard],
         pathMatch: 'full',
     },
     {

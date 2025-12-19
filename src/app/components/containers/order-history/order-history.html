@@ -1,0 +1,8 @@
+@if (isLoading) {
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading your orders...</p>
+    </div>
+} @else {
+    <app-order-list [orders]="orders"></app-order-list>
+}

@@ -155,8 +155,8 @@ export class Checkout implements OnInit, OnDestroy {
                 }
             );
 
-            console.log('Navigating to home...');
-            this.router.navigate(['/home']);
+            console.log('Navigating to order confirmation...');
+            this.router.navigate(['/order-confirmation', order.orderId]);
         } catch (error: any) {
             console.error('Order placement error:', error);
             this.snackBar.open(

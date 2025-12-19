@@ -11,17 +11,17 @@ export class OrdersAdapter {
             orderId: data.order_id,
             userId: data.user_id,
             totalAmount: data.total_amount,
-            status: data.status as OrderStatus,
-            items: data.items.map(this.adaptOrderItem),
-            shippingAddress: this.adaptAddress(data.shipping_address),
-            paymentInfo: this.adaptPaymentInfo(data.payment_info),
+            status: data.order_status as OrderStatus,
+            items: data.items.map((item) => OrdersAdapter.adaptOrderItem(item)),
+            shippingAddress: OrdersAdapter.adaptAddress(data.shipping_address),
+            paymentInfo: OrdersAdapter.adaptPaymentInfo(data.payment_info),
             createdAt: data.created_at,
             paidAt: data.paid_at,
         };
     }
 
     static adaptMany(dataArray: OrderData[]): Order[] {
-        return dataArray.map(this.adapt);
+        return dataArray.map((data) => OrdersAdapter.adapt(data));
     }
 
     private static adaptOrderItem(data: OrderItemData): OrderItem {

@@ -2,7 +2,7 @@ export interface OrderData {
     order_id: string;
     user_id: string;
     total_amount: number;
-    status: string;
+    order_status: string;
     items: OrderItemData[];
     shipping_address: AddressData;
     payment_info: PaymentInfoData;

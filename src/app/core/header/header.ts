@@ -42,6 +42,10 @@ export class Header {
         { title: 'Browse Products', url: '/browse-products' },
     ];
 
+    authenticatedPages = [
+        { title: 'Orders', url: '/orders' }
+    ];
+
     adminPages = [{ title: 'Update Inventory', url: '/update-inventory' }];
 
     openCreateAccountDialog(event?: Event): void {

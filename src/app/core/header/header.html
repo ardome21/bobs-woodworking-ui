@@ -23,6 +23,19 @@
                 {{ page.title }}
             </a>
         }
+        @if (userProfile$ | async) {
+            @for (page of authenticatedPages; track page.title) {
+                <a
+                    mat-button
+                    [routerLink]="page.url"
+                    routerLinkActive="active"
+                    [title]="page.title"
+                    class="nav-link"
+                >
+                    {{ page.title }}
+                </a>
+            }
+        }
         @if ((userProfile$ | async)?.role === UserRole.ADMIN) {
             @for (page of adminPages; track page.title) {
                 <a

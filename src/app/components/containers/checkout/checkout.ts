@@ -55,36 +55,41 @@ export class Checkout implements OnInit, OnDestroy {
             this.calculateTotals();
         });
 
-        // Only initialize Stripe once
-        if (!this.stripeElements) {
-            try {
-                const stripe = await this.paymentService.getStripeInstance();
-                if (stripe) {
-                    this.stripeElements = stripe.elements();
-                } else {
-                    console.error('Failed to load Stripe');
-                    this.snackBar.open('Payment system failed to load. Please refresh the page.', 'Close', {
-                        duration: 5000
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading Stripe:', error);
+        // Reset and reload Stripe to ensure fresh state on each visit
+        this.paymentService.resetStripe();
+
+        try {
+            const stripe = await this.paymentService.getStripeInstance();
+            if (stripe) {
+                this.stripeElements = stripe.elements();
+                console.log('Stripe loaded successfully, stripeElements:', this.stripeElements);
+                // Manually trigger change detection to update the template
+                this.cdr.detectChanges();
+            } else {
+                console.error('Failed to load Stripe');
                 this.snackBar.open('Payment system failed to load. Please refresh the page.', 'Close', {
                     duration: 5000
                 });
             }
+        } catch (error) {
+            console.error('Error loading Stripe:', error);
+            this.snackBar.open('Payment system failed to load. Please refresh the page.', 'Close', {
+                duration: 5000
+            });
         }
     }
 
     onFormReady(event: { form: FormGroup; cardElement: StripeCardElement }): void {
         this.shippingForm = event.form;
         this.cardElement = event.cardElement;
-        this.isFormReady = true;
 
-        // Force Angular to detect the change
+        // Defer state change to avoid ExpressionChangedAfterItHasBeenCheckedError
+        // This happens because the child component (CheckoutForm) emits formReady
+        // during ngAfterViewInit, which is after the parent has already been checked
         setTimeout(() => {
+            this.isFormReady = true;
             this.cdr.detectChanges();
-        });
+        }, 0);
     }
 
     async placeOrder(): Promise<void> {
@@ -180,6 +185,9 @@ export class Checkout implements OnInit, OnDestroy {
         if (this.cartSubscription) {
             this.cartSubscription.unsubscribe();
         }
+
+        // Reset Stripe when leaving checkout to clean up state
+        this.paymentService.resetStripe();
 
         // Don't destroy cardElement here - the CheckoutForm presenter handles that
     }

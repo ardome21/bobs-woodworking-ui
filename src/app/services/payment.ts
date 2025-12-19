@@ -9,10 +9,10 @@ import { OrdersApi } from '../repository/services/orders-api';
     providedIn: 'root'
 })
 export class PaymentService {
-    private stripePromise: Promise<Stripe | null>;
+    private stripePromise: Promise<Stripe | null> | null = null;
 
     constructor(private ordersApi: OrdersApi) {
-        this.stripePromise = loadStripe(environment.stripePublishableKey);
+        // Stripe will be loaded on-demand
     }
 
     createPaymentIntent(amount: number): Observable<PaymentIntent> {
@@ -20,7 +20,7 @@ export class PaymentService {
     }
 
     async confirmCardPayment(clientSecret: string, cardElement: StripeCardElement): Promise<any> {
-        const stripe = await this.stripePromise;
+        const stripe = await this.getStripeInstance();
         if (!stripe) {
             throw new Error('Stripe failed to load');
         }
@@ -38,7 +38,21 @@ export class PaymentService {
         return result.paymentIntent;
     }
 
+    /**
+     * Reset the Stripe instance to force a fresh load
+     * Call this when navigating to checkout to ensure clean state
+     */
+    resetStripe(): void {
+        console.log('Resetting Stripe instance');
+        this.stripePromise = null;
+    }
+
     async getStripeInstance(): Promise<Stripe | null> {
+        // Load Stripe fresh if not already loaded or if reset
+        if (!this.stripePromise) {
+            console.log('Loading fresh Stripe instance');
+            this.stripePromise = loadStripe(environment.stripePublishableKey);
+        }
         return this.stripePromise;
     }
 }

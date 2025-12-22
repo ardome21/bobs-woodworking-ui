@@ -5,7 +5,8 @@
         <div class="cart-items-section">
             <app-cart-list
                 [cartItems]="cartItems"
-                (itemRemoved)="onItemRemoved($event)">
+                (itemRemoved)="onItemRemoved($event)"
+                (quantityChanged)="onQuantityChanged($event)">
             </app-cart-list>
         </div>
 

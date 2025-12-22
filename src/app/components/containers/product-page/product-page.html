@@ -2,8 +2,10 @@
     <app-product-details
         [product]="product()"
         [isInCart]="isInCart()"
+        [cartQuantity]="cartQuantity()"
         (addedToCart)="onAddedToCart($event)"
-        (removedFromCart)="onRemovedFromCart($event)">
+        (removedFromCart)="onRemovedFromCart($event)"
+        (cartQuantityChanged)="onCartQuantityChanged($event)">
     </app-product-details>
     <button matButton="tonal" routerLink="/browse-products">
         Back to Products

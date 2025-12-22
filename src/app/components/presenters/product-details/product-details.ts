@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 
 export interface ProductUpdateData {
@@ -26,6 +27,7 @@ export interface ProductUpdateData {
         MatIconModule,
         MatInputModule,
         MatFormFieldModule,
+        MatSelectModule,
         FormsModule,
     ],
     templateUrl: './product-details.html',
@@ -36,14 +38,17 @@ export class ProductDetails {
     @Input() editView: boolean = false;
     @Input() isSaving: boolean = false;
     @Input() isInCart: boolean = false;
+    @Input() cartQuantity: number = 0;
     @Output() productDeleted = new EventEmitter<number>();
     @Output() productUpdated = new EventEmitter<ProductUpdateData>();
     @Output() addedToCart = new EventEmitter<{ product: Product; quantity: number }>();
     @Output() removedFromCart = new EventEmitter<number>();
+    @Output() cartQuantityChanged = new EventEmitter<{ productId: number; quantity: number }>();
 
     editedProduct: {
         name: string;
         price: number;
+        quantity: number;
         description: string;
         imageUrls: string[];
     } | null = null;
@@ -52,13 +57,14 @@ export class ProductDetails {
     previewImageUrls = signal<string[]>([]);
     currentImageIndex: number = 0;
     imagesToDelete: Set<number> = new Set();
-    quantity: number = 1;
+    selectedQuantity: number = 1;
 
     ngOnChanges(): void {
         if (this.product && this.editView) {
             this.editedProduct = {
                 name: this.product.name,
                 price: this.product.price,
+                quantity: this.product.quantity,
                 description: this.product.description || '',
                 imageUrls: this.product.imageUrls,
             };
@@ -75,6 +81,7 @@ export class ProductDetails {
         return (
             this.editedProduct.name !== this.product.name ||
             this.editedProduct.price !== this.product.price ||
+            this.editedProduct.quantity !== this.product.quantity ||
             this.editedProduct.description !==
                 (this.product.description || '') ||
             this.selectedFiles.length > 0 ||
@@ -117,6 +124,7 @@ export class ProductDetails {
         const formData = new FormData();
         formData.append('title', this.editedProduct.name);
         formData.append('price', this.editedProduct.price.toString());
+        formData.append('quantity', this.editedProduct.quantity.toString());
         formData.append('description', this.editedProduct.description);
 
         // Add existing images that should be kept (not marked for deletion)
@@ -222,12 +230,38 @@ export class ProductDetails {
         return this.imagesToDelete.has(index);
     }
 
+    getMaxQuantity(): number {
+        if (!this.product) return 1;
+        return Math.min(5, this.product.quantity);
+    }
+
+    increaseQuantity(): void {
+        if (this.selectedQuantity < this.getMaxQuantity()) {
+            this.selectedQuantity++;
+        }
+    }
+
+    decreaseQuantity(): void {
+        if (this.selectedQuantity > 1) {
+            this.selectedQuantity--;
+        }
+    }
+
+    validateQuantity(): void {
+        const max = this.getMaxQuantity();
+        if (this.selectedQuantity < 1) {
+            this.selectedQuantity = 1;
+        } else if (this.selectedQuantity > max) {
+            this.selectedQuantity = max;
+        }
+    }
+
     addToCart(): void {
         if (!this.product) return;
 
         this.addedToCart.emit({
             product: this.product,
-            quantity: 1
+            quantity: this.selectedQuantity
         });
     }
 
@@ -235,5 +269,23 @@ export class ProductDetails {
         if (!this.product) return;
 
         this.removedFromCart.emit(this.product.id);
+    }
+
+    increaseCartQuantity(): void {
+        if (!this.product || this.cartQuantity >= 5) return;
+
+        this.cartQuantityChanged.emit({
+            productId: this.product.id,
+            quantity: this.cartQuantity + 1
+        });
+    }
+
+    decreaseCartQuantity(): void {
+        if (!this.product || this.cartQuantity <= 1) return;
+
+        this.cartQuantityChanged.emit({
+            productId: this.product.id,
+            quantity: this.cartQuantity - 1
+        });
     }
 }

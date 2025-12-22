@@ -42,6 +42,10 @@ export class Cart implements OnInit {
         }
     }
 
+    onQuantityChanged(event: { productId: number; quantity: number }): void {
+        this.cartService.updateQuantity(event.productId, event.quantity);
+    }
+
     private calculateTotals(): void {
         const cart = this.cartService.getCartWithTotals();
         this.subtotal = cart.total;

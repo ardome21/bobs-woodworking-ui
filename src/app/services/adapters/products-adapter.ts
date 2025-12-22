@@ -10,6 +10,7 @@ export class ProductsAdapter {
             id: data.id,
             name: data.title,
             price: data.price,
+            quantity: data.quantity,
             imageUrls: data.images || [],
             description: data.description,
         };

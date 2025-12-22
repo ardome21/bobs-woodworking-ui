@@ -80,6 +80,7 @@ export class AddInventoryForm implements OnInit, OnDestroy {
                 !currentValue.title &&
                 !currentValue.description &&
                 !currentValue.price &&
+                !currentValue.quantity &&
                 !currentValue.images
             ) {
                 this.resetFileSelection();

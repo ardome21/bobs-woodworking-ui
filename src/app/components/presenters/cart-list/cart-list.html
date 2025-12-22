@@ -10,7 +10,28 @@
                     />
                     <div class="item-details">
                         <h3 class="item-name">{{ item.product_name }}</h3>
-                        <p class="item-price">${{ item.unit_price }}</p>
+                        <p class="item-price">${{ item.unit_price }} each</p>
+                        <div class="quantity-controls">
+                            <button
+                                mat-icon-button
+                                (click)="decreaseQuantity(item)"
+                                [disabled]="item.quantity <= 1"
+                                class="quantity-btn"
+                                aria-label="Decrease quantity"
+                            >
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                            <span class="quantity-display">{{ item.quantity }}</span>
+                            <button
+                                mat-icon-button
+                                (click)="increaseQuantity(item)"
+                                [disabled]="item.quantity >= 5"
+                                class="quantity-btn"
+                                aria-label="Increase quantity"
+                            >
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
                     </div>
                     <div class="item-controls">
                         <p class="item-subtotal">${{ item.subtotal.toFixed(2) }}</p>

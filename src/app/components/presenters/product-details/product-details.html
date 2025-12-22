@@ -110,11 +110,26 @@
                                     />
                                     <span matTextPrefix>$&nbsp;</span>
                                 </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Quantity</mat-label>
+                                    <input
+                                        matInput
+                                        type="number"
+                                        [(ngModel)]="editedProduct.quantity"
+                                        required
+                                        min="0"
+                                    />
+                                </mat-form-field>
                             } @else {
                                 <mat-card-title>{{ product.name }}</mat-card-title>
                                 <mat-card-subtitle class="price"
                                     >${{ product.price }}</mat-card-subtitle
                                 >
+                                @if (product.quantity <= 5) {
+                                    <mat-card-subtitle class="stock-warning"
+                                        >Only {{ product.quantity }} left!</mat-card-subtitle
+                                    >
+                                }
                             }
                         </div>
                         @if (editView) {
@@ -157,27 +172,86 @@
                     </mat-card-actions>
                 } @else {
                     <mat-card-actions class="cart-actions">
+                        <p class="purchase-limit-notice">Limit 5 per order</p>
                         @if (isInCart) {
-                            <button
-                                mat-raised-button
-                                color="accent"
-                                (click)="removeFromCart()"
-                                class="in-cart-btn"
-                            >
-                                <mat-icon>check_circle</mat-icon>
-                                Added to Cart
-                                <mat-icon>close</mat-icon>
-                            </button>
+                            <div class="cart-quantity-controls">
+                                <div class="quantity-controls">
+                                    <span class="quantity-label">#</span>
+                                    <button
+                                        mat-icon-button
+                                        (click)="decreaseCartQuantity()"
+                                        [disabled]="cartQuantity <= 1"
+                                        class="quantity-btn"
+                                        aria-label="Decrease quantity"
+                                    >
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                    <span class="quantity-display">{{ cartQuantity }}</span>
+                                    <button
+                                        mat-icon-button
+                                        (click)="increaseCartQuantity()"
+                                        [disabled]="cartQuantity >= 5"
+                                        class="quantity-btn"
+                                        aria-label="Increase quantity"
+                                    >
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                                <button
+                                    mat-button
+                                    color="warn"
+                                    (click)="removeFromCart()"
+                                    class="remove-from-cart-btn"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                    Remove from Cart
+                                </button>
+                            </div>
                         } @else {
-                            <button
-                                mat-raised-button
-                                color="primary"
-                                (click)="addToCart()"
-                                class="add-to-cart-btn"
-                            >
-                                <mat-icon>shopping_cart</mat-icon>
-                                Add to Cart
-                            </button>
+                            <div class="quantity-selector">
+                                <div class="quantity-wrapper">
+                                    <div class="quantity-controls">
+                                        <span class="quantity-label">#</span>
+                                        <button
+                                            mat-icon-button
+                                            (click)="decreaseQuantity()"
+                                            [disabled]="selectedQuantity <= 1"
+                                            class="quantity-btn"
+                                            aria-label="Decrease quantity"
+                                        >
+                                            <mat-icon>remove</mat-icon>
+                                        </button>
+                                        <input
+                                            type="number"
+                                            [(ngModel)]="selectedQuantity"
+                                            [min]="1"
+                                            [max]="getMaxQuantity()"
+                                            class="quantity-input"
+                                            (change)="validateQuantity()"
+                                            aria-label="Quantity"
+                                        />
+                                        <button
+                                            mat-icon-button
+                                            (click)="increaseQuantity()"
+                                            [disabled]="selectedQuantity >= getMaxQuantity()"
+                                            class="quantity-btn"
+                                            aria-label="Increase quantity"
+                                        >
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                    <span class="quantity-limit-text">Max: {{ getMaxQuantity() }}</span>
+                                </div>
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    (click)="addToCart()"
+                                    class="add-to-cart-btn"
+                                >
+                                    <mat-icon>shopping_cart</mat-icon>
+                                    Add to Cart
+                                </button>
+                            </div>
                         }
                     </mat-card-actions>
                 }

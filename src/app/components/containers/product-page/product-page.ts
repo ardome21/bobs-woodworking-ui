@@ -36,6 +36,17 @@ export class ProductPage implements OnInit {
         return items.some(item => item.product_id === currentProduct.id);
     });
 
+    // Computed signal that gets current cart quantity for this product
+    public cartQuantity = computed(() => {
+        const currentProduct = this.product();
+        const items = this.cartItems();
+
+        if (!currentProduct) return 0;
+
+        const cartItem = items.find(item => item.product_id === currentProduct.id);
+        return cartItem?.quantity || 0;
+    });
+
     ngOnInit() {
         const id = Number(this.route.snapshot.paramMap.get('id'));
         if (!isNaN(id)) {
@@ -82,5 +93,9 @@ export class ProductPage implements OnInit {
                 duration: 3000
             }
         );
+    }
+
+    onCartQuantityChanged(event: { productId: number; quantity: number }): void {
+        this.cartService.updateQuantity(event.productId, event.quantity);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,10 @@ import { Subscription } from 'rxjs';
 import { CartService } from '../../../services/cart';
 import { PaymentService } from '../../../services/payment';
 import { OrdersService } from '../../../services/orders';
+import { Auth } from '../../../core/auth/services/auth';
+import { AuthApi } from '../../../repository/services/auth-api';
 import { CartItem } from '../../../models/cart';
+import { UserProfile } from '../../../models/user-profile';
 import { CheckoutForm } from '../../presenters/checkout-form/checkout-form';
 import { OrderSummary } from '../../presenters/order-summary/order-summary';
 
@@ -28,6 +31,8 @@ import { OrderSummary } from '../../presenters/order-summary/order-summary';
     styleUrls: ['./checkout.scss'],
 })
 export class Checkout implements OnInit, OnDestroy {
+    @ViewChild(CheckoutForm) checkoutFormComponent!: CheckoutForm;
+
     cartItems: CartItem[] = [];
     subtotal: number = 0;
     total: number = 0;
@@ -37,12 +42,17 @@ export class Checkout implements OnInit, OnDestroy {
     shippingForm!: FormGroup;
     cardElement!: StripeCardElement;
     isFormReady: boolean = false;
+    savedAddresses: { [key: string]: any } = {};
+    isLoggedIn: boolean = false;
+    userProfile: UserProfile | null = null;
 
     private cartSubscription?: Subscription;
 
     private cartService = inject(CartService);
     private paymentService = inject(PaymentService);
     private ordersService = inject(OrdersService);
+    private authService = inject(Auth);
+    private authApi = inject(AuthApi);
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
     private cdr = inject(ChangeDetectorRef);
@@ -53,6 +63,15 @@ export class Checkout implements OnInit, OnDestroy {
         this.cartSubscription = this.cartService.cart$.subscribe(items => {
             this.cartItems = items;
             this.calculateTotals();
+        });
+
+        // Check if user is logged in and fetch saved addresses
+        this.authService.userProfile$.subscribe(userProfile => {
+            this.userProfile = userProfile;
+            this.isLoggedIn = !!userProfile;
+            if (this.isLoggedIn) {
+                this.loadSavedAddresses();
+            }
         });
 
         // Reset and reload Stripe to ensure fresh state on each visit
@@ -143,6 +162,14 @@ export class Checkout implements OnInit, OnDestroy {
                 throw new Error('Failed to create order');
             }
 
+            // Save address if checkbox is checked
+            if (this.isLoggedIn && this.checkoutFormComponent?.saveCurrentAddress && this.checkoutFormComponent?.addressNickname) {
+                const nickname = this.checkoutFormComponent.addressNickname.trim();
+                if (nickname) {
+                    this.onSaveAddress(nickname, this.shippingForm.value);
+                }
+            }
+
             console.log('Clearing cart...');
             this.cartService.clearCart();
 
@@ -176,6 +203,35 @@ export class Checkout implements OnInit, OnDestroy {
         const cart = this.cartService.getCartWithTotals();
         this.subtotal = cart.total;
         this.total = cart.total;
+    }
+
+    private loadSavedAddresses(): void {
+        this.authApi.getSavedAddresses().subscribe({
+            next: (response) => {
+                this.savedAddresses = response.addresses || {};
+                console.log('Saved addresses loaded:', this.savedAddresses);
+            },
+            error: (error) => {
+                console.error('Error loading saved addresses:', error);
+            }
+        });
+    }
+
+    onSaveAddress(nickname: string, address: any): void {
+        this.authApi.saveAddress(nickname, address).subscribe({
+            next: (response) => {
+                this.savedAddresses = response.addresses;
+                this.snackBar.open('Address saved successfully', 'Close', {
+                    duration: 3000
+                });
+            },
+            error: (error) => {
+                console.error('Error saving address:', error);
+                this.snackBar.open('Failed to save address', 'Close', {
+                    duration: 3000
+                });
+            }
+        });
     }
 
     ngOnDestroy(): void {

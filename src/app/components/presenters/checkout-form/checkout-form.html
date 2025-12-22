@@ -1,13 +1,28 @@
 <div class="checkout-form">
     <h2>Shipping Information</h2>
-    <form [formGroup]="shippingForm">
+
+    @if (isLoggedIn && getSavedAddressKeys().length > 0) {
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Full Name</mat-label>
-            <input matInput formControlName="name" required />
-            @if (shippingForm.get('name')?.hasError('required') && shippingForm.get('name')?.touched) {
-                <mat-error>Name is required</mat-error>
-            }
+            <mat-label>Use Saved Address</mat-label>
+            <mat-select [(value)]="selectedSavedAddress" (selectionChange)="onSavedAddressChange($event.value)">
+                <mat-option value="">Enter New Address</mat-option>
+                @for (nickname of getSavedAddressKeys(); track nickname) {
+                    <mat-option [value]="nickname">{{ nickname }}</mat-option>
+                }
+            </mat-select>
         </mat-form-field>
+    }
+
+    <form [formGroup]="shippingForm">
+        @if (!isLoggedIn) {
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="name" required />
+                @if (shippingForm.get('name')?.hasError('required') && shippingForm.get('name')?.touched) {
+                    <mat-error>Name is required</mat-error>
+                }
+            </mat-form-field>
+        }
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Street Address</mat-label>
@@ -52,6 +67,20 @@
                 }
             </mat-form-field>
         </div>
+
+        @if (isLoggedIn && selectedSavedAddress === '') {
+            <div class="save-address-section">
+                <mat-checkbox [(ngModel)]="saveCurrentAddress" [ngModelOptions]="{standalone: true}">
+                    Save this address for future orders
+                </mat-checkbox>
+                @if (saveCurrentAddress) {
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Address Nickname (e.g., "Home", "Work")</mat-label>
+                        <input matInput [(ngModel)]="addressNickname" [ngModelOptions]="{standalone: true}" placeholder="Home" />
+                    </mat-form-field>
+                }
+            </div>
+        }
     </form>
 
     <h2>Payment Information</h2>

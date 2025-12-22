@@ -1,34 +1,73 @@
-import { Component, EventEmitter, Input, OnInit, Output, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, AfterViewInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StripeCardElement, StripeElements } from '@stripe/stripe-js';
+import { UserProfile } from '../../../models/user-profile';
 
 @Component({
     selector: 'app-checkout-form',
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+    imports: [ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule],
     templateUrl: './checkout-form.html',
     styleUrls: ['./checkout-form.scss'],
 })
-export class CheckoutForm implements OnInit, AfterViewInit, OnDestroy {
+export class CheckoutForm implements OnInit, AfterViewInit, OnDestroy, OnChanges {
     @Input() stripeElements!: StripeElements;
+    @Input() savedAddresses: { [key: string]: any } = {};
+    @Input() isLoggedIn: boolean = false;
+    @Input() userProfile: UserProfile | null = null;
     @Output() formReady = new EventEmitter<{ form: FormGroup; cardElement: StripeCardElement }>();
+    @Output() saveAddress = new EventEmitter<{ nickname: string; address: any }>();
 
     shippingForm!: FormGroup;
     cardElement!: StripeCardElement;
     cardError: string | null = null;
+    selectedSavedAddress: string = '';
+    saveCurrentAddress: boolean = true;
+    addressNickname: string = '';
 
     constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
+        // Name is only required if user is not logged in
+        const nameValidators = this.isLoggedIn ? [] : [Validators.required];
+
         this.shippingForm = this.fb.group({
-            name: ['', Validators.required],
+            name: ['', nameValidators],
             street: ['', Validators.required],
             city: ['', Validators.required],
             state: ['', Validators.required],
             zip: ['', Validators.required],
             country: ['USA', Validators.required],
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['savedAddresses'] && this.savedAddresses) {
+            // Reset selection if saved addresses change
+            this.selectedSavedAddress = '';
+        }
+    }
+
+    onSavedAddressChange(nickname: string): void {
+        if (nickname && this.savedAddresses[nickname]) {
+            const address = this.savedAddresses[nickname];
+            this.shippingForm.patchValue({
+                name: address.name,
+                street: address.street,
+                city: address.city,
+                state: address.state,
+                zip: address.zip,
+                country: address.country
+            });
+            this.saveCurrentAddress = false;
+        }
+    }
+
+    getSavedAddressKeys(): string[] {
+        return Object.keys(this.savedAddresses);
     }
 
     ngAfterViewInit(): void {

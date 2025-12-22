@@ -66,4 +66,23 @@ export class AuthApi {
             {},
         );
     }
+
+    getSavedAddresses(): Observable<{ addresses: { [key: string]: any } }> {
+        return this.http.get<{ addresses: { [key: string]: any } }>(
+            this.baseUrl + '/saved-addresses'
+        );
+    }
+
+    saveAddress(nickname: string, address: any): Observable<{ message: string; addresses: { [key: string]: any } }> {
+        return this.http.post<{ message: string; addresses: { [key: string]: any } }>(
+            this.baseUrl + '/saved-addresses',
+            { nickname, address }
+        );
+    }
+
+    deleteAddress(nickname: string): Observable<{ message: string; addresses: { [key: string]: any } }> {
+        return this.http.delete<{ message: string; addresses: { [key: string]: any } }>(
+            this.baseUrl + `/saved-addresses/${nickname}`
+        );
+    }
 }

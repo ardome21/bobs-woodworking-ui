@@ -7,6 +7,9 @@
                 @if (stripeElements) {
                     <app-checkout-form
                         [stripeElements]="stripeElements"
+                        [savedAddresses]="savedAddresses"
+                        [isLoggedIn]="isLoggedIn"
+                        [userProfile]="userProfile"
                         (formReady)="onFormReady($event)">
                     </app-checkout-form>
                 } @else {

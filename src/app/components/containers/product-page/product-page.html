@@ -1,7 +1,9 @@
 <body>
     <app-product-details
         [product]="product()"
-        (addedToCart)="onAddedToCart($event)">
+        [isInCart]="isInCart()"
+        (addedToCart)="onAddedToCart($event)"
+        (removedFromCart)="onRemovedFromCart($event)">
     </app-product-details>
     <button matButton="tonal" routerLink="/browse-products">
         Back to Products

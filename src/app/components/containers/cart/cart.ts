@@ -30,10 +30,6 @@ export class Cart implements OnInit {
         });
     }
 
-    onQuantityChanged(event: { productId: number; quantity: number }): void {
-        this.cartService.updateQuantity(event.productId, event.quantity);
-    }
-
     onItemRemoved(productId: number): void {
         const item = this.cartItems.find(i => i.product_id === productId);
         if (item) {

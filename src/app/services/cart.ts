@@ -81,17 +81,17 @@ export class CartService {
 
   /**
    * Add product to cart
+   * @returns true if item was added, false if it was already in cart
    */
-  addToCart(product: Product, quantity: number = 1): void {
+  addToCart(product: Product, quantity: number = 1): boolean {
     const items = [...this.cartSubject.value];
 
     // Check if product already exists in cart
     const existingItemIndex = items.findIndex(item => item.product_id === product.id);
 
     if (existingItemIndex >= 0) {
-      // Update quantity of existing item
-      items[existingItemIndex].quantity += quantity;
-      items[existingItemIndex].subtotal = items[existingItemIndex].quantity * items[existingItemIndex].unit_price;
+      // Product already in cart - do nothing (one-of-a-kind items)
+      return false;
     } else {
       // Add new item to cart
       const newItem: CartItem = {
@@ -107,6 +107,7 @@ export class CartService {
 
     this.cartSubject.next(items);
     this.saveCartToStorage(items);
+    return true;
   }
 
   /**

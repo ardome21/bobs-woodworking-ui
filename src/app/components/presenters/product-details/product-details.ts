@@ -35,9 +35,11 @@ export class ProductDetails {
     @Input() product: Product | null = null;
     @Input() editView: boolean = false;
     @Input() isSaving: boolean = false;
+    @Input() isInCart: boolean = false;
     @Output() productDeleted = new EventEmitter<number>();
     @Output() productUpdated = new EventEmitter<ProductUpdateData>();
     @Output() addedToCart = new EventEmitter<{ product: Product; quantity: number }>();
+    @Output() removedFromCart = new EventEmitter<number>();
 
     editedProduct: {
         name: string;
@@ -225,10 +227,13 @@ export class ProductDetails {
 
         this.addedToCart.emit({
             product: this.product,
-            quantity: this.quantity
+            quantity: 1
         });
+    }
 
-        // Reset quantity after adding
-        this.quantity = 1;
+    removeFromCart(): void {
+        if (!this.product) return;
+
+        this.removedFromCart.emit(this.product.id);
     }
 }

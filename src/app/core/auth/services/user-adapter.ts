@@ -9,6 +9,7 @@ import { UserRole } from '../../../models/enums/user-profile-enum';
 export class UserAdapter {
     fromData(userData: UserData): UserProfile {
         return {
+            userId: userData.user_id || '',
             email: userData.email,
             firstName: userData.first_name,
             lastName: userData.last_name,

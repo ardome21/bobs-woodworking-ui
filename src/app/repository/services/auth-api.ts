@@ -108,4 +108,33 @@ export class AuthApi {
             guest: UserData;
         }>(this.baseUrl + '/auth/guest-token', payload);
     }
+
+    requestAdminElevation(): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(
+            this.baseUrl + '/request-admin-elevation',
+            {}
+        );
+    }
+
+    promoteUserToAdmin(userId: string): Observable<{
+        message: string;
+        user: {
+            user_id: string;
+            email: string;
+            first_name: string;
+            last_name: string;
+            role: string;
+        };
+    }> {
+        return this.http.post<{
+            message: string;
+            user: {
+                user_id: string;
+                email: string;
+                first_name: string;
+                last_name: string;
+                role: string;
+            };
+        }>(this.baseUrl + '/promote-user-to-admin', { user_id: userId });
+    }
 }

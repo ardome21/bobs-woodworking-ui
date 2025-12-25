@@ -11,6 +11,9 @@ import { Checkout } from './components/containers/checkout/checkout';
 import { OrderConfirmation } from './components/containers/order-confirmation/order-confirmation';
 import { OrderHistory } from './components/containers/order-history/order-history';
 import { OrderDetails } from './components/containers/order-details/order-details';
+import { Account } from './components/containers/account/account';
+import { ManageUsers } from './components/containers/manage-users/manage-users';
+import { AdminElevationSuccess } from './components/containers/admin-elevation-success/admin-elevation-success';
 import { adminGuard, authGuard } from './core/auth/services/auth.guard';
 
 export const routes: Routes = [
@@ -98,9 +101,29 @@ export const routes: Routes = [
         ],
     },
     {
+        path: 'account',
+        title: 'My Account',
+        component: Account,
+        canActivate: [authGuard],
+        pathMatch: 'full',
+    },
+    {
+        path: 'manage-users',
+        title: 'Manage Users',
+        component: ManageUsers,
+        canActivate: [adminGuard],
+        pathMatch: 'full',
+    },
+    {
         path: 'confirmation-success',
         title: 'Confirmation Success',
         component: ConfirmationSuccess,
+        pathMatch: 'full',
+    },
+    {
+        path: 'admin-elevation-success',
+        title: 'Admin Elevation Success',
+        component: AdminElevationSuccess,
         pathMatch: 'full',
     },
     {

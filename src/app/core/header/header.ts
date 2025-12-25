@@ -43,10 +43,14 @@ export class Header {
     ];
 
     authenticatedPages = [
-        { title: 'Orders', url: '/orders' }
+        { title: 'Orders', url: '/orders' },
+        { title: 'Account', url: '/account' }
     ];
 
-    adminPages = [{ title: 'Update Inventory', url: '/update-inventory' }];
+    adminPages = [
+        { title: 'Update Inventory', url: '/update-inventory' },
+        { title: 'Manage Users', url: '/manage-users' }
+    ];
 
     openCreateAccountDialog(event?: Event): void {
         if (event && event.target instanceof HTMLElement) {

@@ -1,0 +1,89 @@
+.manage-users-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.manage-users-card {
+    padding: 1.5rem;
+}
+
+mat-card-title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.promote-section {
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .description {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .input-section {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+
+        .user-id-input {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        button {
+            margin-top: 0.5rem;
+
+            mat-icon {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    .success-message {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        background-color: #e8f5e9;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+
+        mat-icon {
+            color: #4caf50;
+            font-size: 2rem;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .details {
+            flex: 1;
+
+            h4 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.125rem;
+                font-weight: 500;
+                color: #2e7d32;
+            }
+
+            p {
+                margin: 0.5rem 0;
+                color: #333;
+                line-height: 1.5;
+
+                &.note {
+                    font-size: 0.875rem;
+                    color: #666;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+}

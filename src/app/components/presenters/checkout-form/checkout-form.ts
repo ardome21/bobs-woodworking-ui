@@ -31,11 +31,18 @@ export class CheckoutForm implements OnInit, AfterViewInit, OnDestroy, OnChanges
     constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
-        // Name is only required if user is not logged in
-        const nameValidators = this.isLoggedIn ? [] : [Validators.required];
+        // Name is only required if user is not logged in OR is a guest
+        const isRealUser = this.isLoggedIn && this.userProfile?.role !== 'guest';
+        const nameValidators = isRealUser ? [] : [Validators.required];
+
+        // Pre-fill name for guests
+        let defaultName = '';
+        if (this.userProfile?.role === 'guest') {
+            defaultName = `${this.userProfile.firstName} ${this.userProfile.lastName}`.trim();
+        }
 
         this.shippingForm = this.fb.group({
-            name: ['', nameValidators],
+            name: [defaultName, nameValidators],
             street: ['', Validators.required],
             city: ['', Validators.required],
             state: ['', Validators.required],
@@ -48,6 +55,14 @@ export class CheckoutForm implements OnInit, AfterViewInit, OnDestroy, OnChanges
         if (changes['savedAddresses'] && this.savedAddresses) {
             // Reset selection if saved addresses change
             this.selectedSavedAddress = '';
+        }
+
+        // Update name field when userProfile changes (e.g., when guest logs in)
+        if (changes['userProfile'] && this.shippingForm && this.userProfile?.role === 'guest') {
+            const guestName = `${this.userProfile.firstName} ${this.userProfile.lastName}`.trim();
+            if (guestName && !this.shippingForm.get('name')?.value) {
+                this.shippingForm.patchValue({ name: guestName });
+            }
         }
     }
 

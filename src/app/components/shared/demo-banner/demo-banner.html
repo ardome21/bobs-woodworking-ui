@@ -1,0 +1,19 @@
+@if (!uiPreferences.isDemoBannerDismissed()) {
+<div class="demo-banner">
+    <div class="demo-banner__content">
+        <mat-icon class="demo-banner__icon">info</mat-icon>
+        <span class="demo-banner__message">
+            <strong>App in Demo Mode</strong> - Any orders placed will not be
+            fulfilled. Please check back later for updates. We appreciate your
+            patience.
+        </span>
+    </div>
+    <button
+        mat-icon-button
+        class="demo-banner__close"
+        (click)="onDismiss()"
+        aria-label="Dismiss demo mode banner">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+}

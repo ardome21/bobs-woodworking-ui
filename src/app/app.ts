@@ -3,10 +3,11 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './core/header/header';
 import { LoadingSpinner } from './components/shared/loading-spinner/loading-spinner';
+import { DemoBanner } from './components/shared/demo-banner/demo-banner';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, LoadingSpinner],
+    imports: [RouterOutlet, Header, LoadingSpinner, DemoBanner],
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })

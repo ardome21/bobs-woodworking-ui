@@ -112,6 +112,29 @@ export class Auth {
         );
     }
 
+    loginAsGuest(guestData: {
+        email: string;
+        first_name: string;
+        last_name: string;
+    }): Observable<{ message: string; guest: UserData }> {
+        return this._authApiService.createGuestToken(guestData).pipe(
+            tap((res) => {
+                this._accessToken = res.access_token;
+                const guestProfile = this._authAdapterService.fromData(res.guest);
+                this._userProfile.next(guestProfile);
+            }),
+        );
+    }
+
+    clearGuestAuth(): void {
+        this._accessToken = undefined;
+        this._userProfile.next(null);
+        if (this._accessTokenTimeout) {
+            clearTimeout(this._accessTokenTimeout);
+            this._accessTokenTimeout = undefined;
+        }
+    }
+
     private clearAuth(): void {
         this._accessToken = undefined;
         this._userProfile.next(null);

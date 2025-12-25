@@ -85,4 +85,27 @@ export class AuthApi {
             this.baseUrl + `/saved-addresses/${nickname}`
         );
     }
+
+    createGuestToken(guestData: {
+        email: string;
+        first_name: string;
+        last_name: string;
+    }): Observable<{
+        message: string;
+        access_token: string;
+        expires_in: number;
+        guest: UserData;
+    }> {
+        const payload = {
+            email: guestData.email,
+            first_name: guestData.first_name,
+            last_name: guestData.last_name,
+        };
+        return this.http.post<{
+            message: string;
+            access_token: string;
+            expires_in: number;
+            guest: UserData;
+        }>(this.baseUrl + '/auth/guest-token', payload);
+    }
 }

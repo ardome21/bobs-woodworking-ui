@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { StripeCardElement, StripeElements } from '@stripe/stripe-js';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../../services/cart';
@@ -14,11 +15,14 @@ import { Auth } from '../../../core/auth/services/auth';
 import { AuthApi } from '../../../repository/services/auth-api';
 import { CartItem } from '../../../models/cart';
 import { UserProfile } from '../../../models/user-profile';
+import { UserRole } from '../../../models/enums/user-profile-enum';
 import { CheckoutForm } from '../../presenters/checkout-form/checkout-form';
 import { OrderSummary } from '../../presenters/order-summary/order-summary';
+import { CheckoutOptionsDialog } from '../../../core/auth/components/checkout-options-dialog/checkout-options-dialog';
 
 @Component({
     selector: 'app-checkout',
+    standalone: true,
     imports: [
         CheckoutForm,
         OrderSummary,
@@ -56,6 +60,7 @@ export class Checkout implements OnInit, OnDestroy {
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
     private cdr = inject(ChangeDetectorRef);
+    private dialog = inject(MatDialog);
 
     async ngOnInit(): Promise<void> {
         console.log('Checkout ngOnInit called');
@@ -71,6 +76,19 @@ export class Checkout implements OnInit, OnDestroy {
             this.isLoggedIn = !!userProfile;
             if (this.isLoggedIn) {
                 this.loadSavedAddresses();
+            }
+        });
+
+        // Wait for auth check to complete, then show dialog if not logged in
+        this.authService.authChecked$.subscribe(async (authChecked) => {
+            if (authChecked) {
+                console.log('Auth check completed. isLoggedIn:', this.isLoggedIn, 'userProfile:', this.userProfile);
+
+                // If user is not logged in, show checkout options dialog immediately
+                if (!this.userProfile) {
+                    console.log('User not authenticated, showing checkout options');
+                    this.showCheckoutOptions();
+                }
             }
         });
 
@@ -112,6 +130,8 @@ export class Checkout implements OnInit, OnDestroy {
     }
 
     async placeOrder(): Promise<void> {
+        console.log('placeOrder called. isLoggedIn:', this.isLoggedIn, 'userProfile:', this.userProfile);
+
         if (!this.shippingForm.valid) {
             this.shippingForm.markAllAsTouched();
             this.snackBar.open('Please fill in all required fields', 'Close', {
@@ -173,6 +193,12 @@ export class Checkout implements OnInit, OnDestroy {
             console.log('Clearing cart...');
             this.cartService.clearCart();
 
+            // Clear guest authentication after successful order
+            if (this.userProfile?.role === UserRole.GUEST) {
+                console.log('Clearing guest authentication...');
+                this.authService.clearGuestAuth();
+            }
+
             this.snackBar.open(
                 `Order placed successfully! Order ID: ${order.orderId}`,
                 'Close',
@@ -214,6 +240,28 @@ export class Checkout implements OnInit, OnDestroy {
             error: (error) => {
                 console.error('Error loading saved addresses:', error);
             }
+        });
+    }
+
+    private showCheckoutOptions(): void {
+        console.log('Opening checkout options dialog');
+        const dialogRef = this.dialog.open(CheckoutOptionsDialog, {
+            width: '500px',
+            disableClose: true,
+        });
+
+        console.log('Dialog ref:', dialogRef);
+
+        dialogRef.afterClosed().subscribe((authenticated) => {
+            console.log('Dialog closed. Authenticated:', authenticated);
+            if (authenticated) {
+                // User is now authenticated (either logged in or as guest)
+                // The form should now be accessible
+                this.snackBar.open('You can now proceed with checkout', 'Close', {
+                    duration: 3000,
+                });
+            }
+            // If false, user clicked "Go Back" button and was navigated to cart
         });
     }
 

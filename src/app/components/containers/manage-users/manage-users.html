@@ -1,0 +1,55 @@
+<div class="manage-users-container">
+    <mat-card class="manage-users-card">
+        <mat-card-header>
+            <mat-card-title>Manage Users</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="promote-section">
+                <h3>Promote User to Admin</h3>
+                <p class="description">
+                    Enter a User ID to grant admin privileges to that user. The user can find
+                    their User ID on their Account page.
+                </p>
+
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="user-id-input">
+                        <mat-label>User ID</mat-label>
+                        <input
+                            matInput
+                            [(ngModel)]="userIdInput"
+                            placeholder="UID123"
+                            (keyup.enter)="promoteUser()"
+                        />
+                        <mat-icon matPrefix>badge</mat-icon>
+                    </mat-form-field>
+
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        (click)="promoteUser()"
+                        [disabled]="promoting || !userIdInput.trim()"
+                    >
+                        <mat-icon>arrow_upward</mat-icon>
+                        {{ promoting ? 'Promoting...' : 'Promote to Admin' }}
+                    </button>
+                </div>
+
+                @if (promotedUser) {
+                    <div class="success-message">
+                        <mat-icon>check_circle</mat-icon>
+                        <div class="details">
+                            <h4>User Promoted Successfully!</h4>
+                            <p>
+                                <strong>{{ promotedUser.first_name }} {{ promotedUser.last_name }}</strong>
+                                ({{ promotedUser.email }}) has been granted admin access.
+                            </p>
+                            <p class="note">
+                                The user will need to log out and log back in for the changes to take effect.
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,298 @@
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { StripeCardElement, StripeElements } from '@stripe/stripe-js';
+import { Subscription } from 'rxjs';
+import { CartService } from '../../../services/cart';
+import { PaymentService } from '../../../services/payment';
+import { OrdersService } from '../../../services/orders';
+import { Auth } from '../../../core/auth/services/auth';
+import { AuthApi } from '../../../repository/services/auth-api';
+import { CartItem } from '../../../models/cart';
+import { UserProfile } from '../../../models/user-profile';
+import { UserRole } from '../../../models/enums/user-profile-enum';
+import { CheckoutForm } from '../../presenters/checkout-form/checkout-form';
+import { OrderSummary } from '../../presenters/order-summary/order-summary';
+import { CheckoutOptionsDialog } from '../../../core/auth/components/checkout-options-dialog/checkout-options-dialog';
+
+@Component({
+    selector: 'app-checkout',
+    standalone: true,
+    imports: [
+        CheckoutForm,
+        OrderSummary,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        RouterModule,
+    ],
+    templateUrl: './checkout.html',
+    styleUrls: ['./checkout.scss'],
+})
+export class Checkout implements OnInit, OnDestroy {
+    @ViewChild(CheckoutForm) checkoutFormComponent!: CheckoutForm;
+
+    cartItems: CartItem[] = [];
+    subtotal: number = 0;
+    total: number = 0;
+    isProcessing: boolean = false;
+
+    stripeElements: StripeElements | null = null;
+    shippingForm!: FormGroup;
+    cardElement!: StripeCardElement;
+    isFormReady: boolean = false;
+    savedAddresses: { [key: string]: any } = {};
+    isLoggedIn: boolean = false;
+    userProfile: UserProfile | null = null;
+
+    private cartSubscription?: Subscription;
+
+    private cartService = inject(CartService);
+    private paymentService = inject(PaymentService);
+    private ordersService = inject(OrdersService);
+    private authService = inject(Auth);
+    private authApi = inject(AuthApi);
+    private snackBar = inject(MatSnackBar);
+    private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
+    private dialog = inject(MatDialog);
+
+    async ngOnInit(): Promise<void> {
+        console.log('Checkout ngOnInit called');
+
+        this.cartSubscription = this.cartService.cart$.subscribe(items => {
+            this.cartItems = items;
+            this.calculateTotals();
+        });
+
+        // Check if user is logged in and fetch saved addresses
+        this.authService.userProfile$.subscribe(userProfile => {
+            this.userProfile = userProfile;
+            this.isLoggedIn = !!userProfile;
+            if (this.isLoggedIn) {
+                this.loadSavedAddresses();
+            }
+        });
+
+        // Wait for auth check to complete, then show dialog if not logged in
+        this.authService.authChecked$.subscribe(async (authChecked) => {
+            if (authChecked) {
+                console.log('Auth check completed. isLoggedIn:', this.isLoggedIn, 'userProfile:', this.userProfile);
+
+                // If user is not logged in, show checkout options dialog immediately
+                if (!this.userProfile) {
+                    console.log('User not authenticated, showing checkout options');
+                    this.showCheckoutOptions();
+                }
+            }
+        });
+
+        // Reset and reload Stripe to ensure fresh state on each visit
+        this.paymentService.resetStripe();
+
+        try {
+            const stripe = await this.paymentService.getStripeInstance();
+            if (stripe) {
+                this.stripeElements = stripe.elements();
+                console.log('Stripe loaded successfully, stripeElements:', this.stripeElements);
+                // Manually trigger change detection to update the template
+                this.cdr.detectChanges();
+            } else {
+                console.error('Failed to load Stripe');
+                this.snackBar.open('Payment system failed to load. Please refresh the page.', 'Close', {
+                    duration: 5000
+                });
+            }
+        } catch (error) {
+            console.error('Error loading Stripe:', error);
+            this.snackBar.open('Payment system failed to load. Please refresh the page.', 'Close', {
+                duration: 5000
+            });
+        }
+    }
+
+    onFormReady(event: { form: FormGroup; cardElement: StripeCardElement }): void {
+        this.shippingForm = event.form;
+        this.cardElement = event.cardElement;
+
+        // Defer state change to avoid ExpressionChangedAfterItHasBeenCheckedError
+        // This happens because the child component (CheckoutForm) emits formReady
+        // during ngAfterViewInit, which is after the parent has already been checked
+        setTimeout(() => {
+            this.isFormReady = true;
+            this.cdr.detectChanges();
+        }, 0);
+    }
+
+    async placeOrder(): Promise<void> {
+        console.log('placeOrder called. isLoggedIn:', this.isLoggedIn, 'userProfile:', this.userProfile);
+
+        if (!this.shippingForm.valid) {
+            this.shippingForm.markAllAsTouched();
+            this.snackBar.open('Please fill in all required fields', 'Close', {
+                duration: 3000,
+            });
+            return;
+        }
+
+        if (this.cartItems.length === 0) {
+            this.snackBar.open('Your cart is empty', 'Close', { duration: 3000 });
+            return;
+        }
+
+        this.isProcessing = true;
+
+        try {
+            console.log('Creating payment intent for amount:', this.total);
+            const paymentIntent = await this.paymentService
+                .createPaymentIntent(this.total)
+                .toPromise();
+
+            console.log('Payment intent response:', paymentIntent);
+
+            if (!paymentIntent || !paymentIntent.clientSecret) {
+                throw new Error('Failed to create payment intent - no client secret received');
+            }
+
+            console.log('Confirming card payment with client secret');
+            const confirmedPayment = await this.paymentService.confirmCardPayment(
+                paymentIntent.clientSecret,
+                this.cardElement
+            );
+
+            console.log('Payment confirmed:', confirmedPayment);
+
+            console.log('Creating order in backend...');
+            const order = await this.ordersService
+                .createOrder(
+                    this.cartItems,
+                    this.shippingForm.value,
+                    confirmedPayment.id
+                )
+                .toPromise();
+
+            console.log('Order created:', order);
+
+            if (!order) {
+                throw new Error('Failed to create order');
+            }
+
+            // Save address if checkbox is checked
+            if (this.isLoggedIn && this.checkoutFormComponent?.saveCurrentAddress && this.checkoutFormComponent?.addressNickname) {
+                const nickname = this.checkoutFormComponent.addressNickname.trim();
+                if (nickname) {
+                    this.onSaveAddress(nickname, this.shippingForm.value);
+                }
+            }
+
+            console.log('Clearing cart...');
+            this.cartService.clearCart();
+
+            // Clear guest authentication after successful order
+            if (this.userProfile?.role === UserRole.GUEST) {
+                console.log('Clearing guest authentication...');
+                this.authService.clearGuestAuth();
+            }
+
+            this.snackBar.open(
+                `Order placed successfully! Order ID: ${order.orderId}`,
+                'Close',
+                {
+                    duration: 5000,
+                    panelClass: 'snackbar-success',
+                }
+            );
+
+            console.log('Navigating to order confirmation...');
+            this.router.navigate(['/order-confirmation', order.orderId]);
+        } catch (error: any) {
+            console.error('Order placement error:', error);
+            this.snackBar.open(
+                `Payment failed: ${error.message || 'Unknown error'}`,
+                'Close',
+                {
+                    duration: 0,  // Keep error visible until user closes it
+                    panelClass: 'snackbar-error'
+                }
+            );
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+
+    private calculateTotals(): void {
+        const cart = this.cartService.getCartWithTotals();
+        this.subtotal = cart.total;
+        this.total = cart.total;
+    }
+
+    private loadSavedAddresses(): void {
+        this.authApi.getSavedAddresses().subscribe({
+            next: (response) => {
+                this.savedAddresses = response.addresses || {};
+                console.log('Saved addresses loaded:', this.savedAddresses);
+            },
+            error: (error) => {
+                console.error('Error loading saved addresses:', error);
+            }
+        });
+    }
+
+    private showCheckoutOptions(): void {
+        console.log('Opening checkout options dialog');
+        const dialogRef = this.dialog.open(CheckoutOptionsDialog, {
+            width: '500px',
+            disableClose: true,
+        });
+
+        console.log('Dialog ref:', dialogRef);
+
+        dialogRef.afterClosed().subscribe((authenticated) => {
+            console.log('Dialog closed. Authenticated:', authenticated);
+            if (authenticated) {
+                // User is now authenticated (either logged in or as guest)
+                // The form should now be accessible
+                this.snackBar.open('You can now proceed with checkout', 'Close', {
+                    duration: 3000,
+                });
+            }
+            // If false, user clicked "Go Back" button and was navigated to cart
+        });
+    }
+
+    onSaveAddress(nickname: string, address: any): void {
+        this.authApi.saveAddress(nickname, address).subscribe({
+            next: (response) => {
+                this.savedAddresses = response.addresses;
+                this.snackBar.open('Address saved successfully', 'Close', {
+                    duration: 3000
+                });
+            },
+            error: (error) => {
+                console.error('Error saving address:', error);
+                this.snackBar.open('Failed to save address', 'Close', {
+                    duration: 3000
+                });
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        console.log('Checkout ngOnDestroy called');
+
+        // Unsubscribe from cart
+        if (this.cartSubscription) {
+            this.cartSubscription.unsubscribe();
+        }
+
+        // Reset Stripe when leaving checkout to clean up state
+        this.paymentService.resetStripe();
+
+        // Don't destroy cardElement here - the CheckoutForm presenter handles that
+    }
+}

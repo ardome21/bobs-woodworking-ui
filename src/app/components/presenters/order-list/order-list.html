@@ -1,0 +1,61 @@
+@if (orders.length > 0) {
+    <div class="orders-container">
+        <h1>My Orders</h1>
+        <div class="orders-list">
+            @for (order of orders; track order.orderId) {
+                <mat-card appearance="outlined" class="order-card">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h3>Order #{{ order.orderId }}</h3>
+                            <p class="order-date">{{ order.createdAt | date: 'medium' }}</p>
+                        </div>
+                        <div class="order-status">
+                            <span class="status-badge" [class]="'status-' + order.status">
+                                {{ order.status }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="items-summary">
+                            <p class="items-count">
+                                {{ order.items.length }} item{{ order.items.length !== 1 ? 's' : '' }}
+                            </p>
+                            <div class="item-names">
+                                @for (item of order.items; track item.productId; let i = $index) {
+                                    @if (i < 2) {
+                                        <span>{{ item.productName }}</span>
+                                    }
+                                }
+                                @if (order.items.length > 2) {
+                                    <span class="more-items">and {{ order.items.length - 2 }} more...</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total-label">Total</p>
+                            <p class="total-amount">${{ order.totalAmount.toFixed(2) }}</p>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button mat-raised-button color="primary" [routerLink]="['/orders', order.orderId]">
+                            <mat-icon>visibility</mat-icon>
+                            View Details
+                        </button>
+                    </div>
+                </mat-card>
+            }
+        </div>
+    </div>
+} @else {
+    <div class="empty-orders">
+        <mat-icon class="empty-icon">receipt_long</mat-icon>
+        <h2>No orders yet</h2>
+        <p>Start shopping to see your orders here!</p>
+        <button mat-raised-button color="primary" routerLink="/browse-products">
+            <mat-icon>shopping_bag</mat-icon>
+            Browse Products
+        </button>
+    </div>
+}

@@ -1,0 +1,83 @@
+@if (order) {
+    <div class="confirmation-container">
+        <div class="success-header">
+            <mat-icon class="success-icon">check_circle</mat-icon>
+            <h1>Order Confirmed!</h1>
+            <p>Thank you for your purchase</p>
+        </div>
+
+        <mat-card appearance="outlined" class="order-summary">
+            <div class="order-header">
+                <h2>Order Details</h2>
+                <div class="order-meta">
+                    <p><strong>Order ID:</strong> {{ order.orderId }}</p>
+                    <p><strong>Date:</strong> {{ order.createdAt | date: 'medium' }}</p>
+                    <p><strong>Status:</strong> <span class="status-badge">{{ order.status }}</span></p>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="order-items">
+                <h3>Items</h3>
+                @for (item of order.items; track item.productId) {
+                    <div class="order-item">
+                        <div class="item-info">
+                            <p class="item-name">{{ item.productName }}</p>
+                            <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+                        </div>
+                        <div class="item-pricing">
+                            <p class="item-price">${{ item.unitPrice.toFixed(2) }} each</p>
+                            <p class="item-subtotal">${{ item.subtotal.toFixed(2) }}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="order-total">
+                <h3>Total</h3>
+                <p class="total-amount">${{ order.totalAmount.toFixed(2) }}</p>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="shipping-info">
+                <h3>Shipping Address</h3>
+                <p>{{ order.shippingAddress.name }}</p>
+                <p>{{ order.shippingAddress.street }}</p>
+                <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zip }}</p>
+                <p>{{ order.shippingAddress.country }}</p>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="payment-info">
+                <h3>Payment Information</h3>
+                <p>{{ order.paymentInfo.brand }} ending in {{ order.paymentInfo.last4 }}</p>
+                <p class="payment-status">Payment successful</p>
+            </div>
+        </mat-card>
+
+        <div class="actions">
+            <button mat-raised-button color="primary" routerLink="/orders">
+                <mat-icon>receipt_long</mat-icon>
+                View All Orders
+            </button>
+            <button mat-raised-button routerLink="/browse-products">
+                <mat-icon>shopping_bag</mat-icon>
+                Continue Shopping
+            </button>
+        </div>
+
+        <div class="confirmation-note">
+            <mat-icon>email</mat-icon>
+            <p>A confirmation email has been sent to your email address.</p>
+        </div>
+    </div>
+} @else {
+    <div class="loading">
+        <p>Loading order details...</p>
+    </div>
+}

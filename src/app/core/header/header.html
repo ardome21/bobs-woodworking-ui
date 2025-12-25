@@ -23,6 +23,19 @@
                 {{ page.title }}
             </a>
         }
+        @if (userProfile$ | async) {
+            @for (page of authenticatedPages; track page.title) {
+                <a
+                    mat-button
+                    [routerLink]="page.url"
+                    routerLinkActive="active"
+                    [title]="page.title"
+                    class="nav-link"
+                >
+                    {{ page.title }}
+                </a>
+            }
+        }
         @if ((userProfile$ | async)?.role === UserRole.ADMIN) {
             @for (page of adminPages; track page.title) {
                 <a
@@ -37,6 +50,19 @@
             }
         }
     </nav>
+    <div class="cart-section">
+        <button
+            mat-icon-button
+            routerLink="/cart"
+            [matBadge]="cartItemCount()"
+            [matBadgeHidden]="cartItemCount() === 0"
+            matBadgeColor="accent"
+            aria-label="Shopping cart"
+            title="Shopping Cart"
+        >
+            <mat-icon>shopping_cart</mat-icon>
+        </button>
+    </div>
     <div class="user-section">
         @if (authChecked$ | async) {
             @if (userProfile$ | async) {

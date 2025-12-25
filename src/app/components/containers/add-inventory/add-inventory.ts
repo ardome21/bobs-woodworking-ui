@@ -35,6 +35,7 @@ export class AddInventory {
             title: ['', [Validators.required, Validators.minLength(3)]],
             description: ['', [Validators.required, Validators.minLength(10)]],
             price: ['', [Validators.required, Validators.min(0)]],
+            quantity: [1, [Validators.required, Validators.min(0)]],
             images: [null],
         });
     }
@@ -47,6 +48,7 @@ export class AddInventory {
             formData.append('title', formValues.title);
             formData.append('description', formValues.description);
             formData.append('price', formValues.price.toString());
+            formData.append('quantity', formValues.quantity.toString());
             console.log('Form Data prepared:', formData);
             // Append images
             if (formValues.images && formValues.images.length > 0) {

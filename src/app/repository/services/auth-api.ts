@@ -66,4 +66,75 @@ export class AuthApi {
             {},
         );
     }
+
+    getSavedAddresses(): Observable<{ addresses: { [key: string]: any } }> {
+        return this.http.get<{ addresses: { [key: string]: any } }>(
+            this.baseUrl + '/saved-addresses'
+        );
+    }
+
+    saveAddress(nickname: string, address: any): Observable<{ message: string; addresses: { [key: string]: any } }> {
+        return this.http.post<{ message: string; addresses: { [key: string]: any } }>(
+            this.baseUrl + '/saved-addresses',
+            { nickname, address }
+        );
+    }
+
+    deleteAddress(nickname: string): Observable<{ message: string; addresses: { [key: string]: any } }> {
+        return this.http.delete<{ message: string; addresses: { [key: string]: any } }>(
+            this.baseUrl + `/saved-addresses/${nickname}`
+        );
+    }
+
+    createGuestToken(guestData: {
+        email: string;
+        first_name: string;
+        last_name: string;
+    }): Observable<{
+        message: string;
+        access_token: string;
+        expires_in: number;
+        guest: UserData;
+    }> {
+        const payload = {
+            email: guestData.email,
+            first_name: guestData.first_name,
+            last_name: guestData.last_name,
+        };
+        return this.http.post<{
+            message: string;
+            access_token: string;
+            expires_in: number;
+            guest: UserData;
+        }>(this.baseUrl + '/auth/guest-token', payload);
+    }
+
+    requestAdminElevation(): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(
+            this.baseUrl + '/request-admin-elevation',
+            {}
+        );
+    }
+
+    promoteUserToAdmin(userId: string): Observable<{
+        message: string;
+        user: {
+            user_id: string;
+            email: string;
+            first_name: string;
+            last_name: string;
+            role: string;
+        };
+    }> {
+        return this.http.post<{
+            message: string;
+            user: {
+                user_id: string;
+                email: string;
+                first_name: string;
+                last_name: string;
+                role: string;
+            };
+        }>(this.baseUrl + '/promote-user-to-admin', { user_id: userId });
+    }
 }

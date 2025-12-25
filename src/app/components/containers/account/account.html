@@ -1,0 +1,67 @@
+<div class="account-container">
+    @if (userProfile$ | async; as user) {
+        <mat-card class="account-card">
+            <mat-card-header>
+                <mat-card-title>My Account</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="account-info">
+                    <div class="info-row">
+                        <span class="label">Name:</span>
+                        <span class="value">{{ user.firstName }} {{ user.lastName }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Email:</span>
+                        <span class="value">{{ user.email }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">User ID:</span>
+                        <span class="value user-id">
+                            {{ user.userId }}
+                            <button
+                                mat-icon-button
+                                (click)="copyUserId(user.userId)"
+                                title="Copy User ID"
+                                aria-label="Copy User ID to clipboard"
+                            >
+                                <mat-icon>content_copy</mat-icon>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Role:</span>
+                        <span class="value role-badge" [class.admin]="user.role === UserRole.ADMIN">
+                            {{ user.role }}
+                        </span>
+                    </div>
+                </div>
+
+                @if (user.role !== UserRole.ADMIN) {
+                    <div class="admin-request-section">
+                        <h3>Request Admin Access</h3>
+                        <p>
+                            Need admin access? Click the button below to send a request to the
+                            administrator. They will receive an email with a link to approve your
+                            request.
+                        </p>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="requestAdminElevation()"
+                            [disabled]="requesting"
+                        >
+                            <mat-icon>mail</mat-icon>
+                            {{ requesting ? 'Sending Request...' : 'Request Admin Access' }}
+                        </button>
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+    } @else {
+        <mat-card class="account-card">
+            <mat-card-content>
+                <p>Please log in to view your account.</p>
+            </mat-card-content>
+        </mat-card>
+    }
+</div>

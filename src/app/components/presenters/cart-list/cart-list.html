@@ -1,0 +1,60 @@
+@if (cartItems.length > 0) {
+    <div class="cart-items">
+        @for (item of cartItems; track item.product_id) {
+            <mat-card appearance="outlined" class="cart-item">
+                <div class="item-content">
+                    <img
+                        [src]="item.imageUrl"
+                        [alt]="item.product_name"
+                        class="item-image"
+                    />
+                    <div class="item-details">
+                        <h3 class="item-name">{{ item.product_name }}</h3>
+                        <p class="item-price">${{ item.unit_price }} each</p>
+                        <div class="quantity-controls">
+                            <button
+                                mat-icon-button
+                                (click)="decreaseQuantity(item)"
+                                [disabled]="item.quantity <= 1"
+                                class="quantity-btn"
+                                aria-label="Decrease quantity"
+                            >
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                            <span class="quantity-display">{{ item.quantity }}</span>
+                            <button
+                                mat-icon-button
+                                (click)="increaseQuantity(item)"
+                                [disabled]="item.quantity >= 5"
+                                class="quantity-btn"
+                                aria-label="Increase quantity"
+                            >
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="item-controls">
+                        <p class="item-subtotal">${{ item.subtotal.toFixed(2) }}</p>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="removeItem(item.product_id)"
+                            title="Remove from cart"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-card>
+        }
+    </div>
+} @else {
+    <div class="empty-cart">
+        <mat-icon class="empty-icon">shopping_cart</mat-icon>
+        <h2>Your cart is empty</h2>
+        <p>Add some products to get started!</p>
+        <button mat-raised-button color="primary" routerLink="/browse-products">
+            Browse Products
+        </button>
+    </div>
+}

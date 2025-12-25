@@ -1,0 +1,48 @@
+<div class="cart-container">
+    <h1>Shopping Cart</h1>
+
+    <div class="cart-content">
+        <div class="cart-items-section">
+            <app-cart-list
+                [cartItems]="cartItems"
+                (itemRemoved)="onItemRemoved($event)"
+                (quantityChanged)="onQuantityChanged($event)">
+            </app-cart-list>
+        </div>
+
+        @if (cartItems.length > 0) {
+            <div class="cart-summary">
+                <mat-card appearance="outlined">
+                    <mat-card-header>
+                        <mat-card-title>Order Summary</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="summary-row">
+                            <span>Items ({{ itemCount }})</span>
+                            <span>${{ subtotal.toFixed(2) }}</span>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span>${{ total.toFixed(2) }}</span>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            class="checkout-btn"
+                            routerLink="/checkout">
+                            Proceed to Checkout
+                        </button>
+                        <button
+                            mat-button
+                            routerLink="/browse-products">
+                            Continue Shopping
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        }
+    </div>
+</div>

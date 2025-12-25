@@ -1,0 +1,29 @@
+<div class="success-container">
+    <mat-card class="success-card">
+        <mat-card-content>
+            <div class="icon-container">
+                <mat-icon class="success-icon">check_circle</mat-icon>
+            </div>
+
+            @if (alreadyAdmin) {
+                <h1>Already Admin</h1>
+                <p class="message">
+                    This user already has admin privileges. No changes were made.
+                </p>
+            } @else {
+                <h1>Admin Access Granted!</h1>
+                <p class="message">
+                    The user has been successfully promoted to admin. They will need to log out
+                    and log back in for the changes to take effect.
+                </p>
+            }
+
+            <div class="actions">
+                <a mat-raised-button color="primary" routerLink="/home">
+                    <mat-icon>home</mat-icon>
+                    Go to Home
+                </a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

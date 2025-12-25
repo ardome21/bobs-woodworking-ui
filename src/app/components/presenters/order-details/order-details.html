@@ -1,0 +1,114 @@
+@if (order) {
+    <div class="order-details-container">
+        <div class="back-button">
+            <button mat-button routerLink="/orders">
+                <mat-icon>arrow_back</mat-icon>
+                Back to Orders
+            </button>
+        </div>
+
+        <div class="page-header">
+            <h1>Order Details</h1>
+            <span class="status-badge" [class]="'status-' + order.status">
+                {{ order.status }}
+            </span>
+        </div>
+
+        <mat-card appearance="outlined" class="details-card">
+            <div class="order-info-section">
+                <h2>Order Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Order ID:</span>
+                        <span class="value">{{ order.orderId }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Order Date:</span>
+                        <span class="value">{{ order.createdAt | date: 'medium' }}</span>
+                    </div>
+                    @if (order.paidAt) {
+                        <div class="info-item">
+                            <span class="label">Payment Date:</span>
+                            <span class="value">{{ order.paidAt | date: 'medium' }}</span>
+                        </div>
+                    }
+                    <div class="info-item">
+                        <span class="label">Status:</span>
+                        <span class="value status-text">{{ order.status }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="order-items-section">
+                <h2>Order Items</h2>
+                <div class="items-list">
+                    @for (item of order.items; track item.productId) {
+                        <div class="item-row">
+                            <div class="item-main">
+                                <h3 class="item-name">{{ item.productName }}</h3>
+                                <p class="item-meta">
+                                    <span>Quantity: {{ item.quantity }}</span>
+                                    <span class="separator">•</span>
+                                    <span>Unit Price: ${{ item.unitPrice.toFixed(2) }}</span>
+                                </p>
+                            </div>
+                            <div class="item-price">
+                                <p class="subtotal">${{ item.subtotal.toFixed(2) }}</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="order-total-section">
+                    <div class="total-row">
+                        <span class="total-label">Total Amount:</span>
+                        <span class="total-amount">${{ order.totalAmount.toFixed(2) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="shipping-section">
+                <h2>Shipping Address</h2>
+                <div class="address-box">
+                    <p class="recipient-name">{{ order.shippingAddress.name }}</p>
+                    <p>{{ order.shippingAddress.street }}</p>
+                    <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zip }}</p>
+                    <p>{{ order.shippingAddress.country }}</p>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="payment-section">
+                <h2>Payment Information</h2>
+                <div class="payment-box">
+                    <div class="payment-method">
+                        <mat-icon>credit_card</mat-icon>
+                        <div class="payment-details">
+                            <p class="card-info">{{ order.paymentInfo.brand }} ending in {{ order.paymentInfo.last4 }}</p>
+                            <p class="payment-method-type">{{ order.paymentInfo.paymentMethod }}</p>
+                        </div>
+                    </div>
+                    <div class="payment-status-section">
+                        <mat-icon class="success-icon">check_circle</mat-icon>
+                        <span class="payment-status">Payment Successful</span>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+
+        <div class="actions">
+            <button mat-raised-button routerLink="/browse-products">
+                <mat-icon>shopping_bag</mat-icon>
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+} @else {
+    <div class="loading">
+        <p>Loading order details...</p>
+    </div>
+}

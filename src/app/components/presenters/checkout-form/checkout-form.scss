@@ -1,0 +1,47 @@
+.checkout-form {
+    padding: 1rem;
+}
+
+h2 {
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+mat-form-field {
+    margin-bottom: 1rem;
+}
+
+.payment-section {
+    margin-top: 1rem;
+}
+
+.card-element {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    padding: 1rem;
+    background: white;
+    min-height: 40px;
+}
+
+.card-error {
+    color: #f44336;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
